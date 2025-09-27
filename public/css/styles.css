@@ -4,3 +4,83 @@
 *:after {
   box-sizing: border-box;
 }
+
+/* ======================================== */
+/* variables */
+/* ======================================== */
+:root {
+  --primary-color: #DDEB9D;
+  --secondary-color: #A0C878;
+  --accent-color: #143D60;
+  --splash-color: #EB5B00;
+}
+
+/* ======================================== */
+/* global */
+/* ======================================== */
+* {
+  padding: 0;
+  margin: 0;
+}
+
+a {
+  text-decoration: none;
+}
+
+a:hover {
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+html,
+body {
+  line-height: 1.7rem;
+  position: relative;
+  overflow-x: hidden;
+}
+
+p {
+  margin: 10px, 0;
+}
+
+/* ======================================== */
+/* utilies */
+/* ======================================== */
+.primary-text {
+}
+
+.accent-text {
+}
+
+.container {
+}
+
+.btn {
+}
+
+.dark-btn {
+}
+
+/* ======================================== */
+/* navbar */
+/* ======================================== */
+#navbar {
+}
+
+#navbar a {
+}
+
+#navbar a:hover {
+}
+
+#navbar a.current {
+}
+
+/* ======================================== */
+/* footer */
+/* ======================================== */
+#footer a {
+}
+
+#footer a:hover {
+}
