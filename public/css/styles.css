@@ -71,6 +71,10 @@ p {
   font-size: larger;
 }
 
+.active {
+  background-color: var(--accent-color);
+}
+
 .btn:hover {
   cursor: pointer;
   text-decoration: underline;
