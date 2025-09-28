@@ -54,9 +54,6 @@ p {
   font-weight: bold;
 }
 
-.accent-text {
-}
-
 .container {
   padding: 5px 7px;
 }
@@ -81,9 +78,6 @@ p {
   background-color: var(--accent-color);
 }
 
-.dark-btn {
-}
-
 /* ======================================== */
 /* navbar */
 /* ======================================== */
@@ -105,15 +99,6 @@ p {
 
 #navbar li.current {
   background-color: var(--accent-color);
-}
-
-/* ======================================== */
-/* footer */
-/* ======================================== */
-#footer a {
-}
-
-#footer a:hover {
 }
 
 /* ======================================== */
