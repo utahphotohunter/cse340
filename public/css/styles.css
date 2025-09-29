@@ -75,13 +75,6 @@ p {
   font-size: 1.5rem;
 }
 
-/* .reg-text {
-  font-size: 1.2rem;
-} */
-
-.accent-text {
-}
-
 .container {
   padding: 5px 7px;
 }
@@ -110,9 +103,6 @@ p {
   cursor: pointer;
   text-decoration: underline;
   background-color: var(--accent-color);
-}
-
-.dark-btn {
 }
 
 .showcase {
