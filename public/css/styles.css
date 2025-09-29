@@ -10,9 +10,22 @@
 /* ======================================== */
 :root {
   --primary-color: #b7eb9d;
+  --primary-color-trans: #b7eb9d90;
   --secondary-color: #5cba5f;
+  --secondary-color-trans: #5cba5f90;
   --accent-color: #d56231;
+  --accent-color-trans: #d5623190;
   --text-color: #052c4d;
+  --text-color-trans: #052c4d90;
+}
+
+/* ======================================== */
+/* wrapper */
+/* ======================================== */
+#wrapper {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
 }
 
 /* ======================================== */
@@ -47,12 +60,24 @@ p {
   margin: 10px, 0;
 }
 
+
 /* ======================================== */
 /* utilies */
 /* ======================================== */
 .primary-text {
   font-weight: bold;
+  color: var(--text-color);
+  font-size: 1.7rem;
 }
+
+.secondary-text {
+  font-weight: bold;
+  font-size: 1.5rem;
+}
+
+/* .reg-text {
+  font-size: 1.2rem;
+} */
 
 .accent-text {
 }
@@ -61,7 +86,7 @@ p {
   padding: 5px 7px;
 }
 
-.btn {
+.nav-btn {
   color: white;
   width: fit-content;
   min-width: 70px;
@@ -71,8 +96,14 @@ p {
   font-size: larger;
 }
 
-.active {
+.btn {
+  color: white;
   background-color: var(--accent-color);
+  padding: 10px;
+  font-weight: bold;
+  border: none;
+  border-bottom: #72727290 solid 2px;
+  border-right: #72727290 solid 2px;
 }
 
 .btn:hover {
@@ -82,6 +113,37 @@ p {
 }
 
 .dark-btn {
+}
+
+.showcase {
+  min-height: 275px;
+}
+
+.active {
+  background-color: var(--accent-color);
+}
+
+/* ======================================== */
+/* header */
+/* ======================================== */
+.header {
+  background-color: var(--primary-color);
+  color: var(--text-color);
+  height: 75px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: start;
+  padding: 10px;
+}
+
+header a {
+  color: var(--text-color);
+}
+
+.sitename {
+  font-size: 2rem;
+  font-weight: bold;
 }
 
 /* ======================================== */
@@ -110,30 +172,95 @@ p {
 /* ======================================== */
 /* footer */
 /* ======================================== */
-#footer a {
-}
-
-#footer a:hover {
+#footer {
+  margin-top: 10px;
+  height: 70px;
+  display: flex;
+  align-items: end;
+  background-color: var(--primary-color);
+  color: var(--text-color);
+  padding: 10px;
 }
 
 /* ======================================== */
 /* homepage */
 /* ======================================== */
-.header {
-  background-color: var(--primary-color);
-  height: 75px;
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: start;
-  padding: 10px;
+/* showcase */
+#index-page .showcase {
+  width: 100%;
+  background-image: url("/images/vehicles/delorean.jpg");
+  background-repeat: no-repeat;
+  background-size: 80%;
+  background-position: bottom 20px right 20px;
 }
 
-header a {
+#index-page .showcase article {
+  background-color: #ffffff90;
+  width: fit-content;
+  padding: 10px;
+  color: var(--accent-color);
+  margin-top: 10px;
+  margin-left: 5px;
+}
+
+#index-page .showcase ul {
+  padding: 10px 0 10px 0;
+}
+
+#index-page .showcase li {
+  font-weight: bold;
+}
+
+/* upgrades-reviews */
+#index-page .upgrades-reviews {
+  display: flex;
+  flex-direction: column-reverse;
+}
+
+/* upgrades */
+#index-page .upgrades h2 {
   color: var(--text-color);
 }
 
-.sitename {
-  font-size: 2rem;
-  font-weight: bold;
+#index-page .upgrade-icons {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
+  text-align: center;
+  justify-items: center;
+  align-items: center;
+}
+
+#index-page .icon-area {
+  width: 90%;
+  height: 90%;
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
+
+#index-page .icon {
+  background-color: var(--accent-color);
+  height: 100px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#index-page .upgrade-icons p {
+  color: blue;
+  text-decoration: underline;
+}
+
+/* reviews */
+#index-page .reviews h2 {
+  color: var(--text-color);
+}
+
+#index-page .reviews ul {
+  padding: 10px;
+  margin-left: 15px;
+}
+
+#index-page .reviews li {
+  list-style: disc;
 }
