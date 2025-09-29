@@ -1,0 +1,91 @@
+/* ======================================== */
+/* variables */
+/* ======================================== */
+:root {
+  --primary-color: #b7eb9d;
+  --primary-color-trans: #b7eb9d90;
+  --secondary-color: #5cba5f;
+  --secondary-color-trans: #5cba5f90;
+  --accent-color: #d56231;
+  --accent-color-trans: #d5623190;
+  --text-color: #052c4d;
+  --text-color-trans: #052c4d90;
+}
+
+/* ======================================== */
+/* homepage */
+/* ======================================== */
+
+@media (min-width: 850px) {
+  html {
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  body {
+    max-width: 100%;
+    margin: 20px auto;
+    background-image: url("/images/site/checkerboard.jpg");
+    background-position: center;
+    background-repeat: repeat;
+    background-size: 25%;
+    background-clip: border-box;
+    border: var(--accent-color) 5px solid;
+    border-radius: 20px;
+  }
+
+  #content {
+    width: 1200px;
+    margin: 0 auto;
+    background-color: white;
+  }
+
+  /* showcase */
+  .showcase {
+    background-size: 70%;
+    background-position: bottom 50px right 150px;
+    height: 500px;
+  }
+
+  .showcase article {
+    min-width: 25%;
+    padding-left: 50px;
+    margin-top: 30px;
+    margin-left: 150px;
+  }
+
+  /* upgrades-reviews */
+  .upgrades-reviews {
+    flex-direction: row;
+    justify-content: center;
+    align-items: top;
+  }
+
+  /* upgrades */
+  .upgrades {
+    width: 100%;
+  }
+
+  .icon-area {
+    width: 90%;
+    height: 90%;
+    margin-top: 5px;
+    margin-bottom: 5px;
+  }
+
+  /* reviews */
+  .reviews {
+    width: 100%;
+  }
+
+  .reviews ul {
+    padding: 10px;
+    margin-left: 15px;
+  }
+
+  .reviews li {
+    list-style: disc;
+    padding: 10px 0;
+    font-size: 1.2rem;
+  }
+}
