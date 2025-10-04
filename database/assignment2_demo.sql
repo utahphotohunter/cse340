@@ -2,7 +2,7 @@ SELECT * FROM account;
 
 
 
-INSERT INTO public.account (account_firstname, account_lastname, account_email, account_password)
+INSERT INTO account (account_firstname, account_lastname, account_email, account_password)
 VALUES ('Tony', 'Stark', 'tony@starknet.com', 'Iam1ronM@n');
 
 SELECT * FROM account;
@@ -11,13 +11,15 @@ SELECT * FROM account;
 
 UPDATE account
 SET account_type='Admin'
-WHERE account_id=1;
+WHERE account_firstname='Tony'
+	AND account_lastname='Stark';
 
 SELECT * FROM account;
 
 
 
-DELETE FROM account WHERE account_id=1;
+DELETE FROM account WHERE account_firstname='Tony'
+	AND account_lastname='Stark';
 
 SELECT * FROM account;
 
