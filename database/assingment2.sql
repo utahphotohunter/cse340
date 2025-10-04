@@ -3,9 +3,11 @@ VALUES ('Tony', 'Stark', 'tony@starknet.com', 'Iam1ronM@n');
 
 UPDATE account
 SET account_type='Admin'
-WHERE account_id=1;
+WHERE account_firstname='Tony'
+	AND account_lastname='Stark';
 
-DELETE FROM account WHERE account_id=1;
+DELETE FROM account WHERE account_firstname='Tony'
+	AND account_lastname='Stark';
 
 UPDATE inventory
 SET inv_description = REPLACE(inv_description, 'small interiors', 'a huge interior')
