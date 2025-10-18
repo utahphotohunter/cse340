@@ -1,11 +1,7 @@
 <!-- test if title exist -->
 <% if (title) { %>
 <h1><%= title %></h1>
-<% } else {
-  res.redirect('/')
-} %>
-
-<%# messages() %>
+<% } else { res.redirect('/') } %> <%# messages() %>
 
 <!-- display classification view -->
 <%- grid %>
