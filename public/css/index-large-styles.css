@@ -22,19 +22,7 @@
     margin: 0 auto;
   }
 
-  body {
-    max-width: 100%;
-    margin: 20px auto;
-    background-image: url("/images/site/checkerboard.jpg");
-    background-position: center;
-    background-repeat: repeat;
-    background-size: 25%;
-    background-clip: border-box;
-    border: var(--accent-color) 5px solid;
-    border-radius: 20px;
-  }
-
-  #content {
+  #index-content {
     width: 1200px;
     margin: 0 auto;
     background-color: white;
