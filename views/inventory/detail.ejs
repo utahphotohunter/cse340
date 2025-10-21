@@ -1,1 +1,23 @@
-<h1>Hello World!</h1>
+<%# messages() %>
+
+<section>
+  <article>
+    <!-- test if title exist -->
+    <% if (title) { %>
+    <h1><%= title %></h1>
+    <% } else { res.redirect('/') } %>
+    <img src="<%- d.inv_image %>" alt="<%= title %>" />
+  </article>
+  <article>
+    <h2><%= d.inv_make %> <%= d.inv_model %> Details</h2>
+    <ul>
+      <li>
+        <span>Price:</span> <%- Number(d.inv_price).toLocaleString("en-US", {
+        style: "currency", currency: "USD" }) %>
+      </li>
+      <li><span>Description:</span> <%= d.inv_description %></li>
+      <li><span>Color:</span> <%= d.inv_color %></li>
+      <li><span>Milage:</span> <%- d.inv_miles.toLocaleString() %></li>
+    </ul>
+  </article>
+</section>
