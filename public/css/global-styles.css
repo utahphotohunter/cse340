@@ -26,6 +26,7 @@
   display: flex;
   flex-direction: column;
   min-height: 100vh;
+  background-color: white;
 }
 
 /* ======================================== */
@@ -58,6 +59,20 @@ body {
 
 p {
   margin: 10px, 0;
+}
+
+@media (min-width: 850px) {
+  body {
+    max-width: 100%;
+    margin: 20px auto;
+    background-image: url("/images/site/checkerboard.jpg");
+    background-position: center;
+    background-repeat: repeat;
+    background-size: 25%;
+    background-clip: border-box;
+    border: var(--accent-color) 5px solid;
+    border-radius: 20px;
+  }
 }
 
 

@@ -77,6 +77,17 @@ Util.buildClassificationGrid = async function (data) {
   return grid;
 };
 
+/* **************************************
+ * Build the classification view HTML
+ * ************************************ */
+Util.buildDetail = async function (data) {
+  let details;
+  if (data.length > 0) {
+    // build logic goes here
+    console.log(data);
+  }
+};
+
 /* ****************************************
  * Middleware For Handling Errors
  * Wrap other function in this for
