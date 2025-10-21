@@ -17,11 +17,6 @@
 /* ======================================== */
 
 @media (min-width: 850px) {
-  html {
-    max-width: 1200px;
-    margin: 0 auto;
-  }
-
   #index-content {
     width: 1200px;
     margin: 0 auto;

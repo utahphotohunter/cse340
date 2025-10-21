@@ -73,8 +73,12 @@ p {
     border: var(--accent-color) 5px solid;
     border-radius: 20px;
   }
-}
 
+  html {
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+}
 
 /* ======================================== */
 /* utilies */
