@@ -7,9 +7,10 @@ const Util = {};
 Util.getNav = async function (req, res, next) {
   let data = await invModel.getClassifications();
   let list = "<ul>";
-  list += '<li><a href="/" title="Home page">Home</a></li>';
+  list +=
+    '<li id="nav-0" class="nav-btn"><a href="/" title="Home page">Home</a></li>';
   data.rows.forEach((row) => {
-    list += "<li>";
+    list += '<li class="nav-btn" id="nav-' + row.classification_id + '">';
     list +=
       '<a href="/inv/type/' +
       row.classification_id +
