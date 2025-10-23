@@ -1,0 +1,84 @@
+/* ======================================== */
+/* variables */
+/* ======================================== */
+:root {
+  --primary-color: #b7eb9d;
+  --primary-color-trans: #b7eb9d90;
+  --secondary-color: #5cba5f;
+  --secondary-color-trans: #5cba5f90;
+  --accent-color: #d56231;
+  --accent-color-trans: #d5623190;
+  --text-color: #052c4d;
+  --text-color-trans: #052c4d90;
+}
+
+/* ======================================== */
+/* classifications page */
+/* ======================================== */
+#inv-display {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 90%;
+}
+
+#inv-display li {
+  border: var(--accent-color-trans) 2px solid;
+  border-radius: 20px;
+  width: 300px;
+  margin: 10px;
+  overflow: hidden;
+  min-height: 275px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+}
+
+#inv-display li a {
+  display: flex;
+  flex-direction: column;
+  justify-self: flex-start;
+  max-height: fit-content;
+  color: var(--text-color);
+}
+
+#inv-display img {
+  border-bottom: var(--accent-color) 2px solid;
+  max-width: 100%;
+}
+
+.namePrice {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  height: 100%;
+  padding: 20px 10px;
+}
+
+/* ======================================== */
+/* large viewport styles */
+/* ======================================== */
+
+@media (min-width: 850px) {
+  #inv-display {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    place-items: center;
+    justify-self: center;
+  }
+
+
+
+
+
+
+
+
+
+
+
+}
