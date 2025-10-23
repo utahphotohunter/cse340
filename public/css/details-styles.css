@@ -15,4 +15,76 @@
 /* ======================================== */
 /* details page */
 /* ======================================== */
+#details-view {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
 
+#details-view article {
+  margin: 10px;
+}
+
+#detail-img {
+  max-width: 90vw;
+  overflow: hidden;
+}
+
+#detail-img img {
+  width: 100%;
+  max-width: 450px;
+}
+
+#details-view ul {
+  padding: 0 30px;
+  margin-bottom: 20px;
+}
+
+#detail-price {
+  font-weight: bold;
+  font-size: 1.3rem !important;
+}
+
+#details-view ul li {
+  font-size: 1.2rem;
+  padding: 20px 10px;
+  color: var(--text-color);
+}
+
+#details-view ul li:nth-child(even) {
+  background-color: var(--primary-color-trans);
+}
+
+#details-view ul li:nth-child(odd) {
+  background-color: var(--primary-color);
+}
+
+#details-view ul li span {
+  font-weight: bold;
+  font-size: 1.3rem;
+}
+
+/* ======================================== */
+/* large viewport styles */
+/* ======================================== */
+@media (min-width: 850px) {
+  #details-view {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    justify-items: space-between;
+
+    & ul {
+      padding: 0;
+    }
+
+    & #detail-img {
+      align-self: start;
+    }
+
+    & img {
+      margin: 10px;
+      max-width: 100%;
+    }
+  }
+}
