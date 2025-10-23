@@ -26,7 +26,7 @@
   display: flex;
   flex-direction: column;
   height: fit-content;
-  min-height: 90vh;
+  min-height: 100vh;
   background-color: white;
   position: relative;
   padding-bottom: 60px;
@@ -40,7 +40,12 @@
   margin: 0;
 }
 
-h1, h2, h3, h4, h5, h6 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
   color: var(--text-color);
   padding: 10px;
 }
@@ -86,6 +91,10 @@ p {
   html {
     max-width: 1200px;
     margin: 0 auto;
+  }
+
+  #wrapper {
+    min-height: 90vh;
   }
 }
 
@@ -154,7 +163,11 @@ p {
   padding: 10px;
 }
 
-header a {
+.sitename {
+  padding-top: 10px;
+}
+
+.sitename a {
   color: var(--text-color);
 }
 

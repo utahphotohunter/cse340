@@ -1,17 +1,17 @@
 <%# messages() %>
 
-<section id="details-view">
-  <article>
+<section id="details-view" class="container">
+  <article class="container" id="detail-img">
     <!-- test if title exist -->
     <% if (title) { %>
     <h1><%= title %></h1>
     <% } else { res.redirect('/') } %>
     <img src="<%- d.inv_image %>" alt="<%= title %>" />
   </article>
-  <article>
+  <article class="container">
     <h2><%= d.inv_make %> <%= d.inv_model %> Details</h2>
     <ul>
-      <li>
+      <li id="detail-price">
         <span>Price:</span> <%- Number(d.inv_price).toLocaleString("en-US", {
         style: "currency", currency: "USD" }) %>
       </li>

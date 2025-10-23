@@ -20,7 +20,7 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  width: 90%;
+  margin-bottom: 20px;
 }
 
 #inv-display li {
@@ -63,22 +63,17 @@
 /* large viewport styles */
 /* ======================================== */
 
-@media (min-width: 850px) {
+@media (min-width: 750px) {
   #inv-display {
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-columns: 1fr 1fr;
     place-items: center;
     justify-self: center;
   }
+}
 
-
-
-
-
-
-
-
-
-
-
+@media (min-width: 1000px) {
+  #inv-display {
+    grid-template-columns: 1fr 1fr 1fr;
+  }
 }
