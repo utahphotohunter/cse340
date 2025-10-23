@@ -42,14 +42,14 @@ Util.buildClassificationGrid = async function (data) {
         " " +
         vehicle.inv_model +
         'details"><img src="' +
-        vehicle.inv_thumbnail +
+        vehicle.inv_image +
         '" alt="Image of ' +
         vehicle.inv_make +
         " " +
         vehicle.inv_model +
         ' on CSE Motors" /></a>';
       grid += '<div class="namePrice">';
-      grid += "<hr />";
+      // grid += "<hr />";
       grid += "<h2>";
       grid +=
         '<a href="../../inv/detail/' +
@@ -82,7 +82,6 @@ Util.buildClassificationGrid = async function (data) {
  * Build the classification view HTML
  * ************************************ */
 Util.buildDetail = async function (data) {
-  let details;
   if (data.length > 0) {
     // build logic goes here
     console.log(data);
