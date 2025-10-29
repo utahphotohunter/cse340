@@ -1,0 +1,38 @@
+<!-- test if title exist -->
+<% if (title) { %>
+<h1><%= title %></h1>
+<% } else { res.redirect('/') } %> <%- messages() %>
+
+<section id="registration-view" class="container">
+  <form action="">
+    <label for="account_firstname">First Name:</label>
+    <input
+      type="text"
+      name="account_firstname"
+      id="account_firstname"
+      required
+    />
+
+    <label for="account_lastname">Last Name:</label>
+    <input
+      type="text"
+      form="account_lastname"
+      name="account_lastname"
+      required
+    />
+
+    <label for="account_email">Email:</label>
+    <input type="email" id="account_email" name="account_email" required />
+
+    <label for="account_password">Password</label>
+    <input type="text" id="account_password" name="account_password" required />
+
+    <p>Password must be at least 12 characters and contain the following:</p>
+    <ul>
+        <li>at least 1 capital letter</li>
+        <li>at least 1 number</li>
+        <li>at least 1 special character</li>
+    </ul>
+    <button type="submit" class="btn">Register</button>
+  </form>
+</section>
