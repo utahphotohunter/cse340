@@ -1,16 +1,16 @@
 <!-- test if title exist -->
 <% if (title) { %>
 <h1><%= title %></h1>
-<% } else { res.redirect('/') } %> <%# messages() %>
+<% } else { res.redirect('/') } %> <%- messages() %>
 
 <section id="login-view" class="container">
-<form action="">
+  <form action="">
     <label for="email">Email:</label>
-    <input type="email" id="email" name="email">
+    <input type="email" id="email" name="email" />
 
     <label for="password">Password:</label>
-    <input type="text" id="password" name="password">
+    <input type="text" id="password" name="password" />
 
     <button type="submit" class="btn">Login</button>
-</form>
+  </form>
 </section>
