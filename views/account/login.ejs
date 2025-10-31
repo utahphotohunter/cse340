@@ -2,16 +2,31 @@
 <% if (title) { %>
 <h1><%= title %></h1>
 <% } else { res.redirect('/') } %> <%- messages() %>
-
 <section id="login-view" class="container">
-  <form action="">
-    <label for="account_email">Email:</label>
-    <input type="email" id="account_email" name="account_email" />
-
-    <label for="account_password">Password:</label>
-    <input type="text" id="account_password" name="account_password" />
-
-    <button type="submit" class="btn">Login</button>
-    <p>No Account? <a href="./register">Sign-Up</a></p>
-  </form>
+  <div class="container">
+    <form action="">
+      <section class="container">
+        <label for="account_email">Email:</label>
+        <input
+          type="email"
+          id="account_email"
+          name="account_email"
+          placeholder="email"
+        />
+      </section>
+      <section class="container">
+        <label for="account_password">Password:</label>
+        <input
+          type="text"
+          id="account_password"
+          name="account_password"
+          placeholder="password"
+        />
+      </section>
+      <section class="submit-area container">
+        <button type="submit" class="btn submit-btn">Login</button>
+        <p>No Account? <a href="./register">Sign-Up</a></p>
+      </section>
+    </form>
+  </div>
 </section>

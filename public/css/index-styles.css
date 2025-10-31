@@ -30,23 +30,23 @@
   background-repeat: no-repeat;
   background-size: 80%;
   background-position: bottom 20px right 20px;
-}
 
-.showcase article {
-  background-color: #ffffff90;
-  width: fit-content;
-  padding: 10px;
-  color: var(--accent-color);
-  margin-top: 10px;
-  margin-left: 5px;
-}
+  & article {
+    background-color: #ffffff90;
+    width: fit-content;
+    padding: 10px;
+    color: var(--accent-color);
+    margin-top: 10px;
+    margin-left: 5px;
+  }
 
-.showcase ul {
-  padding: 10px 0 10px 0;
-}
+  & ul {
+    padding: 10px 0 10px 0;
+  }
 
-.showcase li {
-  font-weight: bold;
+  & li {
+    font-weight: bold;
+  }
 }
 
 /* upgrades-reviews */
@@ -93,15 +93,15 @@
 /* reviews */
 .reviews h2 {
   color: var(--text-color);
-}
 
-.reviews ul {
-  padding: 10px;
-  margin-left: 15px;
-}
+  & ul {
+    padding: 10px;
+    margin-left: 15px;
+  }
 
-.reviews li {
-  list-style: disc;
+  & li {
+    list-style: disc;
+  }
 }
 
 /* ======================================== */
@@ -120,13 +120,13 @@
     background-size: 70%;
     background-position: bottom 50px left 150px;
     height: 500px;
-  }
 
-  .showcase article {
-    min-width: 25%;
-    padding-left: 50px;
-    margin-top: 30px;
-    margin-left: 150px;
+    & article {
+      min-width: 25%;
+      padding-left: 50px;
+      margin-top: 30px;
+      margin-left: 150px;
+    }
   }
 
   /* upgrades-reviews */
@@ -151,17 +151,17 @@
   /* reviews */
   .reviews {
     width: 100%;
-  }
 
-  .reviews ul {
-    padding: 10px;
-    margin-left: 15px;
-  }
+    & ul {
+      padding: 10px;
+      margin-left: 15px;
+    }
 
-  .reviews li {
-    list-style: disc;
-    padding: 10px 0;
-    font-size: 1.2rem;
+    & li {
+      list-style: disc;
+      padding: 10px 0;
+      font-size: 1.2rem;
+    }
   }
 }
 

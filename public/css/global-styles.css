@@ -165,15 +165,12 @@ p {
 
 .sitename {
   padding-top: 10px;
-}
-
-.sitename a {
-  color: var(--text-color);
-}
-
-.sitename {
   font-size: 2rem;
   font-weight: bold;
+
+  & a {
+    color: var(--text-color);
+  }
 }
 
 /* ======================================== */
@@ -185,23 +182,23 @@ p {
   display: flex;
   justify-content: center;
   width: 100%;
-}
 
-#navbar ul {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-around;
-  align-items: center;
-  width: 90%;
-}
+  & ul {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+    width: 90%;
+  }
 
-#navbar li a {
-  color: white;
-}
+  & li a {
+    color: white;
+  }
 
-#navbar li.current {
-  background-color: var(--accent-color);
-  color: white;
+  & li.current {
+    background-color: var(--accent-color);
+    color: white;
+  }
 }
 
 /* ======================================== */
