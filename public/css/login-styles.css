@@ -1,0 +1,97 @@
+/* ======================================== */
+/* variables */
+/* ======================================== */
+:root {
+  --primary-color: #b7eb9d;
+  --primary-color-trans: #b7eb9d90;
+  --secondary-color: #5cba5f;
+  --secondary-color-trans: #5cba5f90;
+  --accent-color: #d56231;
+  --accent-color-trans: #d5623190;
+  --text-color: #052c4d;
+  --text-color-trans: #052c4d90;
+}
+
+/* ======================================== */
+/* login page */
+/* ======================================== */
+#login-view {
+  /* max-width: 800px; */
+  margin: 0 auto;
+
+  & div {
+    background-color: var(--primary-color);
+    width: 100%;
+    max-width: 800px;
+    margin: 10px;
+    padding: 0 15px;
+    display: flex;
+    flex-direction: column;
+    justify-self: center;
+  }
+}
+
+#login-view form {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: var(--primary-color);
+  padding: 10px 10px;
+
+  & section {
+    width: 100%;
+    padding: 15px 10px;
+    margin: 10px 0;
+    background-color: var(--secondary-color);
+    color: white;
+  }
+
+  & label {
+    font-size: 1.5rem;
+    align-self: flex-start;
+  }
+
+  & input {
+    width: 100%;
+    padding: 10px;
+    font-size: 1rem;
+  }
+
+  & input:focus {
+    outline: var(--accent-color-trans) solid 1px;
+    border: var(--accent-color) solid 2px;
+    padding: 10px;
+  }
+
+  & .submit-area {
+    text-align: center;
+    width: 100%;
+    font-size: 1.2rem;
+    color: var(--text-color);
+    background-color: var(--primary-color);
+    padding: 0;
+  }
+
+  & a {
+    text-decoration: underline;
+  }
+
+  & .submit-btn {
+    font-size: 1.1rem;
+    padding: 10px 20px;
+    margin-bottom: 10px;
+  }
+}
+
+@media (min-width: 850px) {
+  #login-view {
+    background-color: var(--primary-color);
+    margin: 10px;
+    padding: 15px;
+  }
+
+  #login-view form section {
+    padding: 30px 20px;
+  }
+}
