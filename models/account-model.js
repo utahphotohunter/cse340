@@ -5,7 +5,7 @@ const accountModel = {};
 /* *****************************
  *   Register new account
  * *************************** */
-async function registerAccount(
+accountModel.registerAccount = async function (
   account_firstname,
   account_lastname,
   account_email,
@@ -23,6 +23,6 @@ async function registerAccount(
   } catch (error) {
     return error.message;
   }
-}
+};
 
 module.exports = accountModel;
