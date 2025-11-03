@@ -12,16 +12,29 @@
           id="account_email"
           name="account_email"
           placeholder="email"
+          required
         />
       </section>
       <section class="container">
         <label for="account_password">Password:</label>
         <input
-          type="text"
+          type="password"
           id="account_password"
           name="account_password"
           placeholder="password"
+          pattern="^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9])(?!.*\s).{12,}$"
+          required
         />
+        <article class="container">
+          <p>
+            Password must be at least 12 characters and contain the following:
+          </p>
+          <ul>
+            <li>* at least 1 capital letter</li>
+            <li>* at least 1 number</li>
+            <li>* at least 1 special character</li>
+          </ul>
+        </article>
       </section>
       <section class="submit-area container">
         <button type="submit" class="btn submit-btn">Login</button>

@@ -84,25 +84,11 @@
   }
 }
 
-#registration-view article {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
+.auth-form article {
   font-size: 1.1rem;
-
-  & p {
-    text-align: center;
-  }
 
   & li {
     font-size: 1rem;
-  }
-
-  & ul span {
-    color: red;
-    padding-right: 5px;
-    font-size: 1.4rem;
   }
 }
 
