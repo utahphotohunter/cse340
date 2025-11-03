@@ -15,7 +15,7 @@
 /* ======================================== */
 /* login page */
 /* ======================================== */
-#login-view {
+.auth-form {
   /* max-width: 800px; */
   margin: 0 auto;
 
@@ -31,7 +31,7 @@
   }
 }
 
-#login-view form {
+.auth-form form {
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -84,14 +84,36 @@
   }
 }
 
+#registration-view article {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.1rem;
+
+  & p {
+    text-align: center;
+  }
+
+  & li {
+    font-size: 1rem;
+  }
+
+  & ul span {
+    color: red;
+    padding-right: 5px;
+    font-size: 1.4rem;
+  }
+}
+
 @media (min-width: 850px) {
-  #login-view {
+  .auth-form {
     background-color: var(--primary-color);
     margin: 10px;
     padding: 15px;
   }
 
-  #login-view form section {
+  .auth-form form section {
     padding: 30px 20px;
   }
 }
