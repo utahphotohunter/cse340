@@ -11,6 +11,7 @@ accountController.buildLogin = async function (req, res, next) {
   res.render("./account/login", {
     title: "Login",
     nav,
+    errors: null,
   });
 };
 
