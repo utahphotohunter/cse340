@@ -4,22 +4,24 @@
 <% } else { res.redirect('/') } %> <%- messages() %>
 <section id="login-view" class="container auth-form">
   <div class="container">
-    <form action="">
+    <form id="loginForm" action="/account/login" method="post">
       <section class="container">
         <label for="account_email">Email:</label>
         <input
           type="email"
-          id="account_email"
+          id="accountEmail"
           name="account_email"
           placeholder="email"
+          pattern="^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9])(?!.*\s).{12,}$"
           required
+          value="<%= locals.account_email %>"
         />
       </section>
       <section class="container">
         <label for="account_password">Password:</label>
         <input
           type="password"
-          id="account_password"
+          id="accountPassword"
           name="account_password"
           placeholder="password"
           pattern="^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9])(?!.*\s).{12,}$"
@@ -43,3 +45,11 @@
     </form>
   </div>
 </section>
+
+<% if (errors) { %>
+<ul class="notice">
+  <% errors.array().forEach(error => { %>
+  <li><%= error.msg %></li>
+  <% }) %>
+</ul>
+<% } %>

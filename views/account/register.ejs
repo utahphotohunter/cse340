@@ -11,9 +11,10 @@
         <input
           type="text"
           name="account_firstname"
-          id="account_firstname"
           placeholder="first name"
+          id="accountFirstname"
           required
+          value="<%= locals.account_firstname %>"
         />
       </section>
       <section class="container">
@@ -23,27 +24,31 @@
           for="account_lastname"
           name="account_lastname"
           placeholder="last name"
+          id="accountLastname"
           required
+          value="<%= locals.account_lastname %>"
         />
       </section>
       <section class="container">
         <label for="account_email">Email:</label>
         <input
           type="email"
-          id="account_email"
+          id="accountEmail"
           name="account_email"
           placeholder="email"
           pattern="^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9])(?!.*\s).{12,}$"
           required
+          value="<%= locals.account_email %>"
         />
       </section>
       <section class="container">
         <label for="account_password">Password</label>
         <input
           type="password"
-          id="account_password"
+          id="accountPassword"
           name="account_password"
           placeholder="password"
+          pattern="^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9])(?!.*\s).{12,}$"
           required
         />
         <article class="container">
