@@ -2,10 +2,18 @@
 <% if (title) { %>
 <h1><%= title %></h1>
 <% } else { res.redirect('/') } %> <%- messages() %>
+<!-- ---------------------------------------- -->
+<% if (errors) { %>
+<ul class="notice">
+  <% errors.array().forEach(error => { %>
+  <li><%= error.msg %></li>
+  <% }) %>
+</ul>
+<% } %>
 
 <section id="registration-view" class="container auth-form">
   <div class="container">
-    <form action="/account/register" method="post">
+    <form id="registerForm" action="/account/register" method="post">
       <section class="container">
         <label for="account_firstname">First Name:</label>
         <input
@@ -36,7 +44,6 @@
           id="accountEmail"
           name="account_email"
           placeholder="email"
-          pattern="^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9])(?!.*\s).{12,}$"
           required
           value="<%= locals.account_email %>"
         />
@@ -69,11 +76,3 @@
     </form>
   </div>
 </section>
-
-<% if (errors) { %>
-<ul class="notice">
-  <% errors.array().forEach(error => { %>
-  <li><%= error.msg %></li>
-  <% }) %>
-</ul>
-<% } %>
