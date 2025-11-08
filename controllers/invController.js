@@ -36,4 +36,17 @@ invCont.buildByInvId = async function (req, res, next) {
   });
 };
 
+/* ***************************
+ *  Build management view
+ * ************************** */
+invCont.buildManagement = async function (req, res, next) {
+  let nav = await utilities.getNav();
+  const links = await utilities.buildManagement();
+  res.render("./inventory/management", {
+    title: "Manage Site",
+    nav,
+    links,
+  });
+};
+
 module.exports = invCont;

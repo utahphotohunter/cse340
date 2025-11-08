@@ -41,7 +41,7 @@ Util.buildClassificationGrid = async function (data) {
         vehicle.inv_make +
         " " +
         vehicle.inv_model +
-        'details"><img src="' +
+        ' details"><img src="' +
         vehicle.inv_image +
         '" alt="Image of ' +
         vehicle.inv_make +
@@ -79,13 +79,14 @@ Util.buildClassificationGrid = async function (data) {
 };
 
 /* **************************************
- * Build the classification view HTML
+ * Build the management view links
  * ************************************ */
-Util.buildDetail = async function (data) {
-  if (data.length > 0) {
-    // build logic goes here
-    console.log(data);
-  }
+Util.buildManagement = async function() {
+  let links = [];
+  links.push(`<a href="/inv/add_classification" class="btn">Add Classification</a>`);
+  links.push('<a href="/inv/add_inventory" class="btn">Add Inventory</a>');
+  console.log(links);
+  return links;
 };
 
 /* ****************************************
