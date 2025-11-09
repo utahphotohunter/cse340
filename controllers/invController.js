@@ -1,5 +1,7 @@
+const { render } = require("ejs");
 const invModel = require("../models/inventory-model");
 const utilities = require("../utilities/");
+const manager = require("../utilities/management");
 
 const invCont = {};
 
@@ -25,13 +27,11 @@ invCont.buildByClassificationId = async function (req, res, next) {
 invCont.buildByInvId = async function (req, res, next) {
   const inv_id = req.params.inv_id;
   const data = await invModel.getInventoryByInvId(inv_id);
-  const details = await utilities.buildDetail(data);
   let nav = await utilities.getNav();
   let d = data[0];
   res.render("./inventory/detail", {
     title: `${d.inv_year} ${d.inv_make} ${d.inv_model}`,
     nav,
-    details,
     d,
   });
 };
@@ -41,11 +41,35 @@ invCont.buildByInvId = async function (req, res, next) {
  * ************************** */
 invCont.buildManagement = async function (req, res, next) {
   let nav = await utilities.getNav();
-  const links = await utilities.buildManagement();
+  const links = await manager.buildManagement();
   res.render("./inventory/management", {
     title: "Manage Site",
     nav,
     links,
+  });
+};
+
+/* ***************************
+ *  Build classification manager view
+ * ************************** */
+invCont.buildClassificationManager = async function (req, res, next) {
+  let nav = await utilities.getNav();
+  let classManager = await manager.buildClassificationForm();
+  res.render("./inventory/add-classification", {
+    title: "Manage Classifications",
+    nav,
+    classManager,
+  });
+};
+
+/* ***************************
+ *  Build inventory manager view
+ * ************************** */
+invCont.buildInventoryManager = async function (req, res, next) {
+  let nav = await utilities.getNav();
+  res.render("./inventory/add-inventory", {
+    title: "Manage Inventory",
+    nav,
   });
 };
 

@@ -78,17 +78,6 @@ Util.buildClassificationGrid = async function (data) {
   return grid;
 };
 
-/* **************************************
- * Build the management view links
- * ************************************ */
-Util.buildManagement = async function() {
-  let links = [];
-  links.push(`<a href="/inv/add_classification" class="btn">Add Classification</a>`);
-  links.push('<a href="/inv/add_inventory" class="btn">Add Inventory</a>');
-  console.log(links);
-  return links;
-};
-
 /* ****************************************
  * Middleware For Handling Errors
  * Wrap other function in this for

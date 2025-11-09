@@ -15,7 +15,7 @@
 /* ======================================== */
 /* login page */
 /* ======================================== */
-.auth-form {
+.form {
   /* max-width: 800px; */
   margin: 0 auto;
 
@@ -31,7 +31,7 @@
   }
 }
 
-.auth-form form {
+.form form {
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -84,7 +84,7 @@
   }
 }
 
-.auth-form article {
+.form article {
   font-size: 1.1rem;
 
   & li {
@@ -93,13 +93,13 @@
 }
 
 @media (min-width: 850px) {
-  .auth-form {
+  .form {
     background-color: var(--primary-color);
     margin: 10px;
     padding: 15px;
   }
 
-  .auth-form form section {
+  .form form section {
     padding: 30px 20px;
   }
 }
