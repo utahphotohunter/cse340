@@ -67,9 +67,11 @@ invCont.buildClassificationManager = async function (req, res, next) {
  * ************************** */
 invCont.buildInventoryManager = async function (req, res, next) {
   let nav = await utilities.getNav();
+  let invManager = await manager.buildInventoryForm();
   res.render("./inventory/add-inventory", {
     title: "Manage Inventory",
     nav,
+    invManager,
   });
 };
 
