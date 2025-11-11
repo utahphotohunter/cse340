@@ -1,0 +1,46 @@
+/* ======================================== */
+/* variables */
+/* ======================================== */
+:root {
+  --primary-color: #b7eb9d;
+  --primary-color-trans: #b7eb9d90;
+  --secondary-color: #5cba5f;
+  --secondary-color-trans: #5cba5f90;
+  --accent-color: #d56231;
+  --accent-color-trans: #d5623190;
+  --text-color: #052c4d;
+  --text-color-trans: #052c4d90;
+}
+
+/* ======================================== */
+/* add inventory view */
+/* ======================================== */
+#add-inv-view {
+  & form section {
+    display: flex;
+    flex-direction: column;
+  }
+
+  & label {
+    margin-top: 20px;
+    margin-left: 10px;
+    margin-bottom: 5px;
+  }
+
+  & select {
+    margin-top: 25px;
+    font-size: 1rem;
+    padding: 10px;
+  }
+
+  & textarea {
+    height: 100px;
+    font-size: 1rem;
+    padding: 10px;
+    max-width: 100%;
+  }
+
+  & .submit-area {
+    display: block;
+  }
+}

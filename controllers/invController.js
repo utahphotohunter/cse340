@@ -41,11 +41,11 @@ invCont.buildByInvId = async function (req, res, next) {
  * ************************** */
 invCont.buildManagement = async function (req, res, next) {
   let nav = await utilities.getNav();
-  const links = await manager.buildManagement();
+  const managerOptions = await manager.buildManagement();
   res.render("./inventory/management", {
     title: "Manage Site",
     nav,
-    links,
+    managerOptions,
   });
 };
 

@@ -1,0 +1,51 @@
+/* ======================================== */
+/* variables */
+/* ======================================== */
+:root {
+  --primary-color: #b7eb9d;
+  --primary-color-trans: #b7eb9d90;
+  --secondary-color: #5cba5f;
+  --secondary-color-trans: #5cba5f90;
+  --accent-color: #d56231;
+  --accent-color-trans: #d5623190;
+  --text-color: #052c4d;
+  --text-color-trans: #052c4d90;
+}
+
+/* ======================================== */
+/* manager options view */
+/* ======================================== */
+#manager-options-view {
+  padding: 10px;
+  background-color: var(--secondary-color);
+  margin: 10px;
+
+  & div {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 40px;
+    background-color: var(--primary-color);
+  }
+
+  & a {
+    margin: 30px 0;
+    width: 200px;
+    text-align: center;
+    padding: 20px;
+    font-size: 1.2rem;
+  }
+}
+
+@media (min-width: 850px) {
+  #manager-options-view {
+    margin: 30px 10px;
+
+    & div {
+      flex-direction: row;
+      justify-content: space-evenly;
+      height: 300px;
+    }
+  }
+}

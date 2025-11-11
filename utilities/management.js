@@ -5,11 +5,14 @@ const Manager = {};
  * Build the management view links
  * ************************************ */
 Manager.buildManagement = async function () {
-  let links = [];
-  links.push('<a href="/inv/manage/class" class="btn">Add Classification</a>');
-  links.push('<a href="/inv/manage/inv" class="btn">Add Inventory</a>');
-  console.log(links);
-  return links;
+  let managerOptions =
+    '<section id="manager-options-view" class="container"><div>';
+  managerOptions +=
+    '<a href="/inv/manage/class" class="btn">Add Classification</a>';
+  managerOptions += '<a href="/inv/manage/inv" class="btn">Add Inventory</a>';
+  managerOptions += "</div></section>";
+
+  return managerOptions;
 };
 
 /* **************************************
@@ -45,7 +48,7 @@ Manager.buildClassificationList = async function (classification_id = null) {
   let data = await invModel.getClassifications();
   let classificationList =
     '<select name="classification_id" id="classificationList" required>';
-  classificationList += '<option value="">Choose a Classification</option>';
+  classificationList += '<option value="">choose a classification</option>';
   data.rows.forEach((row) => {
     classificationList += `<option value="${row.classification_id}"`;
     if (
