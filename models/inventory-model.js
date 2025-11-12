@@ -1,19 +1,22 @@
 const pool = require("../database/");
+const inventoryModel = {};
 
 /* *********************************************** *
  *  Get all classification data
  * *********************************************** */
-async function getClassifications() {
+inventoryModel.getClassifications = async function () {
   return await pool.query(
     "SELECT * FROM public.classification ORDER BY classification_name"
   );
-}
+};
 
 /* *********************************************** *
  *  Get all inventory items and
  *  classification_name by classification_id
  * *********************************************** */
-async function getInventoryByClassificationId(classification_id) {
+inventoryModel.getInventoryByClassificationId = async function (
+  classification_id
+) {
   try {
     const data = await pool.query(
       `SELECT * FROM public.inventory AS i 
@@ -26,13 +29,13 @@ async function getInventoryByClassificationId(classification_id) {
   } catch (error) {
     console.error("getclassificationsbyid error " + error);
   }
-}
+};
 
 /* *********************************************** *
  *  Get all inventory items and
  *  classification_name by classification_id
  * *********************************************** */
-async function getInventoryByInvId(inv_id) {
+inventoryModel.getInventoryByInvId = async function (inv_id) {
   try {
     const data = await pool.query(
       `SELECT * FROM inventory 
@@ -43,10 +46,21 @@ async function getInventoryByInvId(inv_id) {
   } catch (error) {
     console.error(`getInventoryById error ${error}`);
   }
-}
-
-module.exports = {
-  getClassifications,
-  getInventoryByClassificationId,
-  getInventoryByInvId,
 };
+
+/* *********************************************** *
+ *  Check if classification id exists
+ * *********************************************** */
+inventoryModel.checkClassificationId = async function (classificationId) {
+  try {
+    const data = await pool.query(
+      `SELECT * FROM classification
+      WHERE classification_id = ${classificationId};`
+    );
+    console.log(data.rows);
+  } catch (error) {
+    console.error(`checkClassification error ${error}`);
+  }
+};
+
+module.exports = inventoryModel;

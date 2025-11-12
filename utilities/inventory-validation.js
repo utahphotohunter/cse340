@@ -10,8 +10,9 @@ validate.addInventoryRules = () => {
   return [
     // check is classification_id exists
     body("classification_id").custom(async (classification_id) => {
-      const classificationExists =
-        await inventoryModel.checkExistingClassificationId(classification_id);
+      const classificationExists = await inventoryModel.checkClassificationId(
+        classification_id
+      );
       if (!classificationExists) {
         throw new Error(
           "Classification does not exist. Please select a different classification."
@@ -153,9 +154,7 @@ validate.addClassificationRules = () => {
       // check if classification_name already exists
       .custom(async (classification_name) => {
         const classificationExists =
-          await inventoryModel.checkExistingClassificationName(
-            classification_name
-          );
+          await inventoryModel.checkClassificationName(classification_name);
         if (classificationExists) {
           throw new Error(
             "Classification already exists. Please create a new classification."
