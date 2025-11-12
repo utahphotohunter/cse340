@@ -2,9 +2,9 @@ const pool = require("../database/");
 
 const accountModel = {};
 
-/* *****************************
+/* *********************************************** *
  *   Register new account
- * *************************** */
+ * *********************************************** */
 accountModel.registerAccount = async function (
   account_firstname,
   account_lastname,
@@ -25,9 +25,9 @@ accountModel.registerAccount = async function (
   }
 };
 
-/* **********************
+/* *********************************************** *
  *   Check for existing email
- * ********************* */
+ * *********************************************** */
 accountModel.checkExistingEmail = async function (account_email) {
   try {
     const sql = "SELECT * FROM account WHERE account_email = $1";
@@ -36,6 +36,6 @@ accountModel.checkExistingEmail = async function (account_email) {
   } catch (error) {
     return error.message;
   }
-}
+};
 
 module.exports = accountModel;

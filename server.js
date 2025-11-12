@@ -1,10 +1,10 @@
-/* ******************************************
- * This server.js file is the primary file of the
- * application. It is used to control the project.
- *******************************************/
-/* ***********************
- * Require Statements
- *************************/
+/* *********************************************** *
+ *  This server.js file is the primary file of the
+ *  application. It is used to control the project.
+ * *********************************************** */
+/* *********************************************** *
+ *  Require Statements
+ * *********************************************** */
 const express = require("express");
 const expressLayouts = require("express-ejs-layouts");
 const env = require("dotenv").config();
@@ -18,9 +18,9 @@ const session = require("express-session");
 const pool = require("./database");
 const bodyParser = require("body-parser");
 
-/* ***********************
- * Middleware
- * ************************/
+/* *********************************************** *
+ *  Middleware
+ * *********************************************** */
 app.use(
   session({
     store: new (require("connect-pg-simple")(session))({
@@ -43,18 +43,19 @@ app.use(function (req, res, next) {
 
 // body-parser
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true })); // for parsing application/x-www-form-urlencoded
+// for parsing application/x-www-form-urlencoded
+app.use(bodyParser.urlencoded({ extended: true }));
 
-/* ***********************
- * View Engine and Templates
- *************************/
+/* *********************************************** *
+ *  View Engine and Templates
+ * *********************************************** */
 app.set("view engine", "ejs");
 app.use(expressLayouts);
 app.set("layout", "./layouts/layout"); // not at views root
 
-/* ***********************
- * Routes
- *************************/
+/* *********************************************** *
+ *  Routes
+ * *********************************************** */
 app.use(static);
 // Index route
 app.get("/", utilities.handleErrors(baseController.buildHome));
@@ -67,10 +68,10 @@ app.use(async (req, res, next) => {
   next({ status: 404, message: "Sorry, we appear to have lost that page." });
 });
 
-/* ***********************
- * Express Error Handler
- * Place after all other middleware
- *************************/
+/* *********************************************** *
+ *  Express Error Handler
+ *  Place after all other middleware
+ * *********************************************** */
 app.use(async (err, req, res, next) => {
   let nav = await utilities.getNav();
   console.error(`Error at: "${req.originalUrl}": ${err.message}`);
@@ -86,16 +87,16 @@ app.use(async (err, req, res, next) => {
   });
 });
 
-/* ***********************
- * Local Server Information
- * Values from .env (environment) file
- *************************/
+/* *********************************************** *
+ *  Local Server Information Values from
+ *  .env (environment) file
+ * *********************************************** */
 const port = process.env.PORT;
 const host = process.env.HOST;
 
-/* ***********************
- * Log statement to confirm server operation
- *************************/
+/* *********************************************** *
+ *  Log statement to confirm server operation
+ * *********************************************** */
 app.listen(port, () => {
   console.log(`app listening on ${host}:${port}`);
 });

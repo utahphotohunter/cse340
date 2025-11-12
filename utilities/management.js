@@ -1,9 +1,9 @@
 let invModel = require("../models/inventory-model");
 const Manager = {};
 
-/* **************************************
- * Build the management view links
- * ************************************ */
+/* *********************************************** *
+ *  Build the management view links
+ * *********************************************** */
 Manager.buildManagement = async function () {
   let managerOptions =
     '<section id="manager-options-view" class="container"><div>';
@@ -15,9 +15,9 @@ Manager.buildManagement = async function () {
   return managerOptions;
 };
 
-/* **************************************
- * Build the add classification form
- * ************************************ */
+/* *********************************************** *
+ *  Build the add classification form
+ * *********************************************** */
 Manager.buildClassificationForm = async function () {
   // start section and form
   let form =
@@ -41,9 +41,9 @@ Manager.buildClassificationForm = async function () {
   return form;
 };
 
-/* **************************************
- * Build the classification drop-down
- * ************************************ */
+/* *********************************************** *
+ *  Build the classification drop-down
+ * *********************************************** */
 Manager.buildClassificationList = async function (classification_id = null) {
   let data = await invModel.getClassifications();
   let classificationList =
@@ -63,9 +63,9 @@ Manager.buildClassificationList = async function (classification_id = null) {
   return classificationList;
 };
 
-/* **************************************
- * Build the add inventory form
- * ************************************ */
+/* *********************************************** *
+ *  Build the add inventory form
+ * *********************************************** */
 Manager.buildInventoryForm = async function () {
   let classificationList = await Manager.buildClassificationList();
   // start section and form

@@ -3,9 +3,9 @@ const accountModel = require("../models/account-model");
 const bcrypt = require("bcryptjs");
 const accountController = {};
 
-/* ****************************************
+/* *********************************************** *
  *  Deliver login view
- * *************************************** */
+ * *********************************************** */
 accountController.buildLogin = async function (req, res, next) {
   let nav = await utilities.getNav();
   res.render("./account/login", {
@@ -24,9 +24,9 @@ accountController.buildRegistration = async function (req, res, next) {
   });
 };
 
-/* ****************************************
+/* *********************************************** *
  *  Process Registration
- * *************************************** */
+ * *********************************************** */
 accountController.registerAccount = async function (req, res) {
   let nav = await utilities.getNav();
   const {

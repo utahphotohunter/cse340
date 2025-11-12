@@ -1,11 +1,11 @@
 const utilities = require(".");
 const { body, validationResult } = require("express-validator");
-const validate = {};
 const accountModel = require("../models/account-model");
+const validate = {};
 
-/*  **********************************
+/* *********************************************** *
  *  Registration Data Validation Rules
- * ********************************* */
+ * *********************************************** */
 validate.registrationRules = () => {
   return [
     // firstname is required and must be string
@@ -54,9 +54,10 @@ validate.registrationRules = () => {
   ];
 };
 
-/* ******************************
- * Check data and return errors or continue to registration
- * ***************************** */
+/* *********************************************** *
+ *  Check data and return errors or continue
+ *  to registration
+ * *********************************************** */
 validate.checkRegData = async (req, res, next) => {
   const { account_firstname, account_lastname, account_email } = req.body;
   let errors = [];
@@ -76,9 +77,9 @@ validate.checkRegData = async (req, res, next) => {
   next();
 };
 
-/*  **********************************
+/* *********************************************** *
  *  Login Data Validation Rules
- * ********************************* */
+ * *********************************************** */
 validate.loginRules = () => {
   return [
     // valid email is required and cannot already exist in the database
@@ -91,8 +92,10 @@ validate.loginRules = () => {
         const emailExists = await accountModel.checkExistingEmail(
           account_email
         );
-        if (emailExists) {
-          throw new Error("Email exists. Please log in or use different email");
+        if (!emailExists) {
+          throw new Error(
+            "No account exists under this email. Please use a different email or create a new account."
+          );
         }
       }),
 
@@ -111,9 +114,10 @@ validate.loginRules = () => {
   ];
 };
 
-/* ******************************
- * Check data and return errors or continue to login
- * ***************************** */
+/* *********************************************** *
+ *  Check data and return errors or continue
+ *  to login
+ * *********************************************** */
 validate.checkLoginData = async (req, res, next) => {
   const { account_email } = req.body;
   let errors = [];

@@ -1,6 +1,9 @@
 const utilities = require("../utilities/");
 const baseController = {};
 
+/* *********************************************** *
+ *  Build Home page
+ * *********************************************** */
 baseController.buildHome = async function (req, res) {
   const nav = await utilities.getNav();
   res.render("index", {

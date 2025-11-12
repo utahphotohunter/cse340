@@ -5,9 +5,9 @@ const manager = require("../utilities/management");
 
 const invCont = {};
 
-/* ***************************
+/* *********************************************** *
  *  Build inventory by classification view
- * ************************** */
+ * *********************************************** */
 invCont.buildByClassificationId = async function (req, res, next) {
   const classification_id = req.params.classificationId;
   const data = await invModel.getInventoryByClassificationId(classification_id);
@@ -21,9 +21,9 @@ invCont.buildByClassificationId = async function (req, res, next) {
   });
 };
 
-/* ***************************
+/* *********************************************** *
  *  Build detail by inventory id
- * ************************** */
+ * *********************************************** */
 invCont.buildByInvId = async function (req, res, next) {
   const inv_id = req.params.inv_id;
   const data = await invModel.getInventoryByInvId(inv_id);
@@ -36,9 +36,9 @@ invCont.buildByInvId = async function (req, res, next) {
   });
 };
 
-/* ***************************
+/* *********************************************** *
  *  Build management view
- * ************************** */
+ * *********************************************** */
 invCont.buildManagement = async function (req, res, next) {
   let nav = await utilities.getNav();
   const managerOptions = await manager.buildManagement();
@@ -49,9 +49,9 @@ invCont.buildManagement = async function (req, res, next) {
   });
 };
 
-/* ***************************
+/* *********************************************** *
  *  Build classification manager view
- * ************************** */
+ * *********************************************** */
 invCont.buildClassificationManager = async function (req, res, next) {
   let nav = await utilities.getNav();
   let classManager = await manager.buildClassificationForm();
@@ -62,9 +62,9 @@ invCont.buildClassificationManager = async function (req, res, next) {
   });
 };
 
-/* ***************************
+/* *********************************************** *
  *  Build inventory manager view
- * ************************** */
+ * *********************************************** */
 invCont.buildInventoryManager = async function (req, res, next) {
   let nav = await utilities.getNav();
   let invManager = await manager.buildInventoryForm();
