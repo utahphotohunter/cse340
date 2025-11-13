@@ -124,6 +124,7 @@ validate.checkInvData = async (req, res, next) => {
   } = req.body;
   let errors = [];
   errors = validationResult(req);
+  console.log("inv data checked");
   if (!errors.isEmpty()) {
     let nav = await utilities.getNav();
     res.render("inv/manage/inv", {

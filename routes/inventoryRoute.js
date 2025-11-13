@@ -2,7 +2,7 @@ const express = require("express");
 const router = new express.Router();
 const invController = require("../controllers/invController");
 const utilities = require("../utilities");
-const invValidator = require("../utilities/inventory-validation");
+const inventoryValidator = require("../utilities/inventory-validation");
 
 // Route to build management view
 router.get("/", utilities.handleErrors(invController.buildManagement));
@@ -22,8 +22,11 @@ router.get(
 // Route to post new inventory item to db
 router.post(
   "/manage/inv",
-  invValidator.addInventoryRules(),
-  invValidator.checkInvData
+  inventoryValidator.addInventoryRules(),
+  inventoryValidator.checkInvData,
+  (req, res) => {
+    res.redirect("/inv/manage/inv");
+  }
 );
 
 // Route to build inventory by classification view
