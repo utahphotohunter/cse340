@@ -19,6 +19,13 @@ router.get(
   utilities.handleErrors(invController.buildInventoryManager)
 );
 
+// Route to post new inventory item to db
+router.post(
+  "/manage/inv",
+  invValidator.addInventoryRules(),
+  invValidator.checkInvData
+);
+
 // Route to build inventory by classification view
 router.get(
   "/type/:classificationId",

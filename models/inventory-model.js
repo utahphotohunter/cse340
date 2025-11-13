@@ -57,7 +57,7 @@ inventoryModel.checkClassificationId = async function (classificationId) {
       `SELECT * FROM classification
       WHERE classification_id = ${classificationId};`
     );
-    console.log(data.rows);
+    return data.rows
   } catch (error) {
     console.error(`checkClassification error ${error}`);
   }

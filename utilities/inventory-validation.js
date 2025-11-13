@@ -9,16 +9,24 @@ const validate = {};
 validate.addInventoryRules = () => {
   return [
     // check is classification_id exists
-    body("classification_id").custom(async (classification_id) => {
-      const classificationExists = await inventoryModel.checkClassificationId(
-        classification_id
-      );
-      if (!classificationExists) {
-        throw new Error(
-          "Classification does not exist. Please select a different classification."
+    body("classification_id")
+      .isInt({ min: 1 })
+      .trim()
+      .escape()
+      .notEmpty()
+      .custom(async (classification_id) => {
+        const classificationExists = await inventoryModel.checkClassificationId(
+          classification_id
         );
-      }
-    }),
+        console.log(classificationExists);
+        console.log(classificationExists.length);
+        if (classificationExists.length == 0) {
+          throw new Error(
+            "Classification does not exist. Please select a different classification."
+          );
+        }
+      })
+      .withMessage("Please select a valid vehicle classification."),
 
     // make is required and must be a string
     body("inv_make")
@@ -184,3 +192,5 @@ validate.checkClassificationData = async (req, res, next) => {
   }
   next();
 };
+
+module.exports = validate;
