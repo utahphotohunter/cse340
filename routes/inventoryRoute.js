@@ -24,6 +24,7 @@ router.post(
   "/manage/inv",
   inventoryValidator.addInventoryRules(),
   inventoryValidator.checkInvData,
+  // redirect only for development - needs to be replaced with logic to update inventory table in db
   (req, res) => {
     res.redirect("/inv/manage/inv");
   }

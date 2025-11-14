@@ -29,7 +29,6 @@
   min-height: 100vh;
   background-color: white;
   position: relative;
-  padding-bottom: 60px;
 }
 
 /* ======================================== */
@@ -95,6 +94,8 @@ p {
 
   #wrapper {
     min-height: 90vh;
+    display: flex;
+    flex-direction: column;
   }
 }
 
@@ -208,10 +209,10 @@ p {
   height: 70px;
   display: flex;
   align-items: end;
-  position: absolute;
   background-color: var(--primary-color);
   color: var(--text-color);
   padding: 10px;
   width: 100%;
   bottom: 0;
+  margin-top: 15px;
 }

@@ -40,6 +40,10 @@
     max-width: 100%;
   }
 
+  & p {
+    padding-left: 10px;
+  }
+
   & .submit-area {
     display: block;
   }

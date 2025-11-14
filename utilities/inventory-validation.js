@@ -1,6 +1,7 @@
 const utilities = require(".");
 const { body, validationResult } = require("express-validator");
 const inventoryModel = require("../models/inventory-model");
+const manager = require("../utilities/management");
 const validate = {};
 
 /* *********************************************** *
@@ -14,6 +15,7 @@ validate.addInventoryRules = () => {
       .trim()
       .escape()
       .notEmpty()
+      .withMessage("Please select a valid vehicle classification.")
       .custom(async (classification_id) => {
         const classificationExists = await inventoryModel.checkClassificationId(
           classification_id
@@ -25,16 +27,14 @@ validate.addInventoryRules = () => {
             "Classification does not exist. Please select a different classification."
           );
         }
-      })
-      .withMessage("Please select a valid vehicle classification."),
-
+      }),
+      
     // make is required and must be a string
     body("inv_make")
       .isString()
       .trim()
       .escape()
       .notEmpty()
-      .isLength({ min: 2 })
       .withMessage("Please provide a vehicle make."), // on error this message is sent.
 
     // model is required and must be a string
@@ -51,7 +51,6 @@ validate.addInventoryRules = () => {
       .trim()
       .escape()
       .notEmpty()
-      .isLength({ min: 5 })
       .withMessage("Please provide a vehicle description."), // on error this message is sent.
 
     // image is required and must a string (file path)
@@ -80,7 +79,7 @@ validate.addInventoryRules = () => {
 
     // year is required and must be an integer 1900>=year=< 2100
     body("inv_year")
-      .isInt({ min: 1900, max: 2100 })
+      .isInt({ min: 1900 })
       .trim()
       .escape()
       .notEmpty()
@@ -125,12 +124,15 @@ validate.checkInvData = async (req, res, next) => {
   let errors = [];
   errors = validationResult(req);
   console.log("inv data checked");
+  console.log(classification_id);
   if (!errors.isEmpty()) {
     let nav = await utilities.getNav();
-    res.render("inv/manage/inv", {
+    let classificationList = await manager.buildClassificationList(classification_id);
+    res.render("inventory/add-inventory", {
       errors,
       title: "Manage Inventory",
       nav,
+      classificationList,
       classification_id,
       inv_make,
       inv_model,
