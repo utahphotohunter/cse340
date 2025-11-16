@@ -24,10 +24,11 @@ router.post(
   "/manage/inv",
   inventoryValidator.addInventoryRules(),
   inventoryValidator.checkInvData,
+  utilities.handleErrors(invController.addNewInventory)
   // redirect only for development - needs to be replaced with logic to update inventory table in db
-  (req, res) => {
-    res.redirect("/inv/manage/inv");
-  }
+  // (req, res) => {
+  //   res.redirect("/inv/manage/inv");
+  // }
 );
 
 // Route to build inventory by classification view

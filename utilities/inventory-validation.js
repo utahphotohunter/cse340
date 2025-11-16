@@ -20,8 +20,6 @@ validate.addInventoryRules = () => {
         const classificationExists = await inventoryModel.checkClassificationId(
           classification_id
         );
-        console.log(classificationExists);
-        console.log(classificationExists.length);
         if (classificationExists.length == 0) {
           throw new Error(
             "Classification does not exist. Please select a different classification."
@@ -123,8 +121,6 @@ validate.checkInvData = async (req, res, next) => {
   } = req.body;
   let errors = [];
   errors = validationResult(req);
-  console.log("inv data checked");
-  console.log(classification_id);
   if (!errors.isEmpty()) {
     let nav = await utilities.getNav();
     let classificationList = await manager.buildClassificationList(classification_id);
