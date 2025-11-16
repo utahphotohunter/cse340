@@ -56,8 +56,8 @@ inventoryModel.addNewClassification = async function (classification_name) {
       response.push("");
     }
   } catch (error) {
-    response.push(false);
-    response.push(error.message);
+    response.push("");
+    response.push(error);
   } finally {
     return response;
   }

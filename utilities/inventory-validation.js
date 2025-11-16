@@ -162,12 +162,15 @@ validate.addClassificationRules = () => {
       .withMessage("Please provide a vehicle classification.") // on error this message is sent.
       // check if classification_name already exists
       .custom(async (classification_name) => {
-        const results =
-          await inventoryModel.getClassificationByName(classification_name);
+        const results = await inventoryModel.getClassificationByName(
+          classification_name
+        );
         const resultsLength = results.length;
-        console.log(resultsLength);
+        // console.log(resultsLength);
         if (resultsLength != 0) {
-          throw new Error("Classification already exists. Please create a new classification.");
+          throw new Error(
+            "Classification already exists. Please create a new classification."
+          );
         }
         return true;
       }),
@@ -179,23 +182,27 @@ validate.addClassificationRules = () => {
  *  add classification
  * *********************************************** */
 validate.checkClassificationData = async (req, res, next) => {
-  const {classification_name} = req.body;
+  const { classification_name } = req.body;
+
   let errors = [];
   errors = validationResult(req);
+
   if (!errors.isEmpty()) {
-    console.log(errors)
-    console.log(
-      `classification data checked. Results: ${errors.errors[0].msg}`
-    );
+    console.log(errors);
+
+    const error = errors.errors[0].msg;
+
     let nav = await utilities.getNav();
     let classManager = await manager.buildClassificationForm();
-    req.flash("notice", `something went wrong. ${errors.length}`);
+
+    req.flash("notice", error);
     res.render("inventory/add-classification", {
       errors,
       title: "Manage Classifications",
       nav,
       classManager,
     });
+
     return;
   }
   next();

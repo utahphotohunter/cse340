@@ -61,42 +61,51 @@ inventoryController.buildClassificationManager = async function (
  * *********************************************** */
 inventoryController.addNewClassification = async function (req, res) {
   const { classification_name } = req.body;
+
   const addClassResult = await inventoryModel.addNewClassification(
     classification_name
   );
 
   let nav = await utilities.getNav();
-  if (addClassResult[0] == true) {
-    req.flash(
-      "notice",
-      `Success! ${classification_name} has been added to the classification list.`
-    );
-    const managerOptions = await manager.buildManagement();
-    res.render("./inventory/management", {
-      title: "Manage Site",
-      nav,
-      managerOptions,
-    });
-  } else {
-    req.flash(
-      "notice",
-      `Sorry, the addition of ${classification_name} to the classification list has failed.`
-    );
+  let classManager = await manager.buildClassificationForm();
+  const managerOptions = await manager.buildManagement();
+
+  if (addClassResult[1] != "") {
+    const error = addClassResult[1];
+    console.log(`inventory-model.addNewClassification -- ${error}`);
+    req.flash("notice", `An internal error occured. Please try again.`);
     res.status(501);
-    if (addInvResult[2] != "") {
-      console.log(
-        `inventory-model addNewClassification error: ${addInvResult[2]}`
-      );
-    } else {
-      console.log("inventory-model addNewClassification error: unknown");
-    }
-    let classManager = await manager.buildClassificationForm();
     res.render("inventory/add-classification", {
       errors: null,
       title: "Manage Classifications",
       nav,
       classManager,
     });
+  } else {
+    if (addClassResult[0] == true) {
+      req.flash(
+        "notice",
+        `Success! ${classification_name} has been added to the classification list.`
+      );
+      res.status(201);
+      res.render("./inventory/management", {
+        title: "Manage Site",
+        nav,
+        managerOptions,
+      });
+    } else if (addClassResult[0] == false) {
+      req.flash(
+        "notice",
+        `Sorry, the addition of ${classification_name} to the classifcation list has failed.`
+      );
+      res.status(501);
+      res.render("inventory/add-classification", {
+        errors: null,
+        title: "Manage Classifications",
+        nav,
+        classManager,
+      });
+    }
   }
 };
 
