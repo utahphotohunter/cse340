@@ -26,7 +26,7 @@ validate.addInventoryRules = () => {
           );
         }
       }),
-      
+
     // make is required and must be a string
     body("inv_make")
       .isString()
@@ -123,7 +123,9 @@ validate.checkInvData = async (req, res, next) => {
   errors = validationResult(req);
   if (!errors.isEmpty()) {
     let nav = await utilities.getNav();
-    let classificationList = await manager.buildClassificationList(classification_id);
+    let classificationList = await manager.buildClassificationList(
+      classification_id
+    );
     res.render("inventory/add-inventory", {
       errors,
       title: "Manage Inventory",
@@ -150,7 +152,7 @@ validate.checkInvData = async (req, res, next) => {
  * *********************************************** */
 validate.addClassificationRules = () => {
   return [
-    // classification_id is required and must be a string >=2 in length
+    // classification_name is required and must be a string >=2 in length
     body("classification_name")
       .isString()
       .trim()
@@ -160,13 +162,14 @@ validate.addClassificationRules = () => {
       .withMessage("Please provide a vehicle classification.") // on error this message is sent.
       // check if classification_name already exists
       .custom(async (classification_name) => {
-        const classificationExists =
-          await inventoryModel.checkClassificationName(classification_name);
-        if (classificationExists) {
-          throw new Error(
-            "Classification already exists. Please create a new classification."
-          );
+        const results =
+          await inventoryModel.getClassificationByName(classification_name);
+        const resultsLength = results.length;
+        console.log(resultsLength);
+        if (resultsLength != 0) {
+          throw new Error("Classification already exists. Please create a new classification.");
         }
+        return true;
       }),
   ];
 };
@@ -176,16 +179,22 @@ validate.addClassificationRules = () => {
  *  add classification
  * *********************************************** */
 validate.checkClassificationData = async (req, res, next) => {
-  const { classification_name } = req.body;
+  const {classification_name} = req.body;
   let errors = [];
   errors = validationResult(req);
   if (!errors.isEmpty()) {
+    console.log(errors)
+    console.log(
+      `classification data checked. Results: ${errors.errors[0].msg}`
+    );
     let nav = await utilities.getNav();
-    res.render("inv/manage/inv", {
+    let classManager = await manager.buildClassificationForm();
+    req.flash("notice", `something went wrong. ${errors.length}`);
+    res.render("inventory/add-classification", {
       errors,
       title: "Manage Classifications",
       nav,
-      classification_name,
+      classManager,
     });
     return;
   }

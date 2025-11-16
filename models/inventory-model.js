@@ -24,6 +24,45 @@ inventoryModel.checkClassificationId = async function (classificationId) {
   }
 };
 
+// Get classification by classification_name
+inventoryModel.getClassificationByName = async function (classification_name) {
+  const sql = "SELECT * FROM classification WHERE classification_name = $1;";
+  try {
+    let getClassification = await pool.query(sql, [classification_name]);
+    let result = getClassification.rows;
+    return result;
+  } catch (error) {
+    console.error("getInventoryItemByColumns error " + error);
+  }
+};
+
+// Add new classification
+inventoryModel.addNewClassification = async function (classification_name) {
+  let response = [];
+  try {
+    const sql = "INSERT INTO classification (classification_name) VALUES ($1);";
+
+    await pool.query(sql, [classification_name]);
+
+    let result = await inventoryModel.getClassificationByName(
+      classification_name
+    );
+
+    if (result.length != 0) {
+      response.push(true);
+      response.push("");
+    } else {
+      response.push(false);
+      response.push("");
+    }
+  } catch (error) {
+    response.push(false);
+    response.push(error.message);
+  } finally {
+    return response;
+  }
+};
+
 /* *********************************************** *
  *  Inventory Functions
  * *********************************************** */
