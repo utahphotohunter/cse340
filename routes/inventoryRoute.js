@@ -4,16 +4,33 @@ const invController = require("../controllers/invController");
 const utilities = require("../utilities");
 const inventoryValidator = require("../utilities/inventory-validation");
 
+/* *********************************************** *
+ *  Manangement Route
+ * *********************************************** */
 // Route to build management view
 router.get("/", utilities.handleErrors(invController.buildManagement));
 
+/* *********************************************** *
+ *  Classification Routes
+ * *********************************************** */
 // Route to build classification management view
 router.get(
   "/manage/class",
   utilities.handleErrors(invController.buildClassificationManager)
 );
 
-// Route to build inventory management view
+// Route to post new classification to db
+router.post(
+  "/manage/class",
+  inventoryValidator.addClassificationRules(),
+  inventoryValidator.checkClassificationData,
+  utilities.handleErrors(invController.addNewClassification)
+);
+
+/* *********************************************** *
+ *  Inventory Routes
+ * *********************************************** */
+// Route to build inventory management form
 router.get(
   "/manage/inv",
   utilities.handleErrors(invController.buildInventoryManager)
@@ -25,12 +42,11 @@ router.post(
   inventoryValidator.addInventoryRules(),
   inventoryValidator.checkInvData,
   utilities.handleErrors(invController.addNewInventory)
-  // redirect only for development - needs to be replaced with logic to update inventory table in db
-  // (req, res) => {
-  //   res.redirect("/inv/manage/inv");
-  // }
 );
 
+/* *********************************************** *
+ *  Type and Detail Routes
+ * *********************************************** */
 // Route to build inventory by classification view
 router.get(
   "/type/:classificationId",
