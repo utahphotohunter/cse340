@@ -39,20 +39,16 @@ inventoryModel.getClassificationByName = async function (classification_name) {
 // Add new classification
 inventoryModel.addNewClassification = async function (classification_name) {
   let response;
-
   try {
     const sql = `INSERT INTO classification (classification_name) VALUES ($1) RETURNING classification_id;`;
-
     let addClassificationAndConfirm = await pool.query(sql, [
       classification_name,
     ]);
     let result = addClassificationAndConfirm.rows;
-
     if (result.length != 0) {
       response = "";
     } else {
       response = `Sorry, the addition of "${classification_name}" to the classification list has failed. Please try again.`;
-
       console.log("=============================================");
       console.log(
         "Error at inventory-model.addNewClassification: -- Failed to add classification"
@@ -63,7 +59,6 @@ inventoryModel.addNewClassification = async function (classification_name) {
     console.log("=============================================");
     console.log(`Error at inventory-model.addNewClassification: -- ${error}`);
     console.log("=============================================");
-
     response = `Sorry, the addition of "${classification_name}" to the classification list has failed. Please try again.`;
   } finally {
     return response;
@@ -119,7 +114,6 @@ inventoryModel.addNewInventory = async function (
   inv_miles
 ) {
   let response;
-
   try {
     const sql =
       "INSERT INTO inventory (classification_id, inv_make, inv_model, inv_color, inv_description, inv_image, inv_thumbnail, inv_price, inv_year, inv_miles) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10) RETURNING inv_id;";
@@ -136,14 +130,11 @@ inventoryModel.addNewInventory = async function (
       inv_year,
       inv_miles,
     ]);
-
     const result = addVehicleAndConfirm.rows;
-
     if (result.length != 0) {
       response = "";
     } else {
       response = `Sorry, the addition of your "${inv_year} ${inv_make} ${inv_model}" to the inventory has failed. Please try again.`;
-
       console.log("=============================================");
       console.log(
         "Error at inventory-model.addNewInventory: -- Failed to add inventory."
@@ -154,7 +145,6 @@ inventoryModel.addNewInventory = async function (
     console.log("=============================================");
     console.log(`Error at inventory-model.addNewInventory: -- ${error}`);
     console.log("=============================================");
-
     response = `Sorry, the addition of your "${inv_year} ${inv_make} ${inv_model}" to the inventory has failed. Please try again.`;
   } finally {
     return response;
