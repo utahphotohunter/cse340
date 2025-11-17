@@ -1,4 +1,14 @@
 <!-- test if title exist -->
 <% if (title) { %>
 <h1><%= title %></h1>
-<% } else { res.redirect('/') } %> <%- messages() %> <%- classManager %>
+<% } else { res.redirect('/') } %> <%- messages() %>
+<!-- ---------------------------------------- -->
+<% if (errors) { %>
+  <ul class="notice">
+    <% errors.array().forEach(error => { %>
+    <li><%= error.msg %></li>
+    <% }) %>
+  </ul>
+<% } %> 
+
+<%- classManager %>

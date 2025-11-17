@@ -1,6 +1,6 @@
 const { render } = require("ejs");
 const invModel = require("../models/inventory-model");
-const utilities = require("../utilities/");
+const utilities = require("../utilities");
 const manager = require("../utilities/management");
 const inventoryModel = require("../models/inventory-model");
 
@@ -50,6 +50,7 @@ inventoryController.buildClassificationManager = async function (
   let nav = await utilities.getNav();
   let classManager = await manager.buildClassificationForm();
   res.render("./inventory/add-classification", {
+    errors: null,
     title: "Manage Classifications",
     nav,
     classManager,
@@ -61,43 +62,15 @@ inventoryController.buildClassificationManager = async function (
  * *********************************************** */
 inventoryController.addNewClassification = async function (req, res) {
   const { classification_name } = req.body;
-
-  const addClassResult = await inventoryModel.addNewClassification(
-    classification_name
-  );
-
-  let nav = await utilities.getNav();
-  let classManager = await manager.buildClassificationForm();
-  const managerOptions = await manager.buildManagement();
-
-  if (addClassResult[1] != "") {
-    const error = addClassResult[1];
-    console.log(`inventory-model.addNewClassification -- ${error}`);
-    req.flash("notice", `An internal error occured. Please try again.`);
-    res.status(501);
-    res.render("inventory/add-classification", {
-      errors: null,
-      title: "Manage Classifications",
-      nav,
-      classManager,
-    });
-  } else {
-    if (addClassResult[0] == true) {
-      req.flash(
-        "notice",
-        `Success! ${classification_name} has been added to the classification list.`
-      );
-      res.status(201);
-      res.render("./inventory/management", {
-        title: "Manage Site",
-        nav,
-        managerOptions,
-      });
-    } else if (addClassResult[0] == false) {
-      req.flash(
-        "notice",
-        `Sorry, the addition of ${classification_name} to the classifcation list has failed.`
-      );
+  try {
+    const addClassResult = await inventoryModel.addNewClassification(
+      classification_name
+    );
+    let nav = await utilities.getNav();
+    const classManager = await manager.buildClassificationForm();
+    const managerOptions = await manager.buildManagement();
+    if (addClassResult != "") {
+      req.flash("notice", addClassResult);
       res.status(501);
       res.render("inventory/add-classification", {
         errors: null,
@@ -105,7 +78,37 @@ inventoryController.addNewClassification = async function (req, res) {
         nav,
         classManager,
       });
+    } else {
+      req.flash(
+        "notice",
+        `Success! "${classification_name}" has been added to the classification list.`
+      );
+      res.status(201);
+      res.render("./inventory/management", {
+        title: "Manage Site",
+        nav,
+        managerOptions,
+      });
     }
+  } catch (error) {
+    console.log("=============================================");
+    console.log(
+      `Error at inventoryController.addNewClassification: -- ${error}`
+    );
+    console.log("=============================================");
+    let nav = await utilities.getNav();
+    const classManager = await manager.buildClassificationForm();
+    req.flash(
+      "notice",
+      `Sorry, the addition of "${classification_name}" to the classifcation list has failed.`
+    );
+    res.status(501);
+    res.render("inventory/add-classification", {
+      errors: null,
+      title: "Manage Classifications",
+      nav,
+      classManager,
+    });
   }
 };
 
@@ -126,6 +129,7 @@ inventoryController.buildByInvId = async function (req, res, next) {
     d,
   });
 };
+
 /* *********************************************** *
  *  Build add inventory view
  * *********************************************** */
@@ -133,10 +137,10 @@ inventoryController.buildInventoryManager = async function (req, res, next) {
   let nav = await utilities.getNav();
   let classificationList = await manager.buildClassificationList();
   res.render("./inventory/add-inventory", {
+    errors: null,
     title: "Manage Inventory",
     nav,
     classificationList,
-    errors: null,
   });
 };
 
@@ -157,45 +161,61 @@ inventoryController.addNewInventory = async function (req, res) {
     inv_miles,
   } = req.body;
 
-  const addInvResult = await inventoryModel.addNewInventory(
-    classification_id,
-    inv_make,
-    inv_model,
-    inv_color,
-    inv_description,
-    inv_image,
-    inv_thumbnail,
-    inv_price,
-    inv_year,
-    inv_miles
-  );
-
   let nav = await utilities.getNav();
-  if (addInvResult[0] == true) {
-    req.flash(
-      "notice",
-      `Success! Your ${inv_year} ${inv_make} ${inv_model} has been added to the inventory.`
+  const managerOptions = await manager.buildManagement();
+  const classificationList = await manager.buildClassificationList(
+    classification_id
+  );
+  try {
+    const addInvResult = await inventoryModel.addNewInventory(
+      classification_id,
+      inv_make,
+      inv_model,
+      inv_color,
+      inv_description,
+      inv_image,
+      inv_thumbnail,
+      inv_price,
+      inv_year,
+      inv_miles
     );
-    const managerOptions = await manager.buildManagement();
-    res.render("./inventory/management", {
-      title: "Manage Site",
-      nav,
-      managerOptions,
-    });
-  } else {
-    req.flash(
-      "notice",
-      `Sorry, the addition of your ${inv_year} ${inv_make} ${inv_model} to the inventory has failed.`
-    );
-    res.status(501);
-    if (addInvResult[2] != "") {
-      console.log(`inventory-model addNewInventory error: ${addInvResult[2]}`);
+    if (addInvResult != "") {
+      req.flash("notice", addInvResult);
+      res.status(501);
+      res.render("inventory/add-inventory", {
+        errors: null,
+        title: "Manage Inventory",
+        nav,
+        classificationList,
+        classification_id,
+        inv_make,
+        inv_model,
+        inv_color,
+        inv_description,
+        inv_image,
+        inv_thumbnail,
+        inv_price,
+        inv_year,
+        inv_miles,
+      });
     } else {
-      console.log("inventory-model addNewInventory error: unknown");
+      req.flash(
+        "notice",
+        `Success! Your "${inv_year} ${inv_make} ${inv_model}" has been added to the inventory.`
+      );
+      res.status(201);
+      res.render("./inventory/management", {
+        title: "Manage Site",
+        nav,
+        managerOptions,
+      });
     }
-    let classificationList = await manager.buildClassificationList(
-      classification_id
-    );
+  } catch (error) {
+    console.log("=============================================");
+    console.log(`Error at inventoryController.addNewInventory: -- ${error}`);
+    console.log("=============================================");
+    req.flash("notice", "Sorry, an internal error occured. Please Try again.");
+    res.status(501);
     res.render("inventory/add-inventory", {
       errors: null,
       title: "Manage Inventory",

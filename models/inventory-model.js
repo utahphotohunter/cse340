@@ -38,26 +38,33 @@ inventoryModel.getClassificationByName = async function (classification_name) {
 
 // Add new classification
 inventoryModel.addNewClassification = async function (classification_name) {
-  let response = [];
+  let response;
+
   try {
-    const sql = "INSERT INTO classification (classification_name) VALUES ($1);";
+    const sql = `INSERT INTO classification (classification_name) VALUES ($1) RETURNING classification_id;`;
 
-    await pool.query(sql, [classification_name]);
-
-    let result = await inventoryModel.getClassificationByName(
-      classification_name
-    );
+    let addClassificationAndConfirm = await pool.query(sql, [
+      classification_name,
+    ]);
+    let result = addClassificationAndConfirm.rows;
 
     if (result.length != 0) {
-      response.push(true);
-      response.push("");
+      response = "";
     } else {
-      response.push(false);
-      response.push("");
+      response = `Sorry, the addition of "${classification_name}" to the classification list has failed. Please try again.`;
+
+      console.log("=============================================");
+      console.log(
+        "Error at inventory-model.addNewClassification: -- Failed to add classification"
+      );
+      console.log("=============================================");
     }
   } catch (error) {
-    response.push("");
-    response.push(error);
+    console.log("=============================================");
+    console.log(`Error at inventory-model.addNewClassification: -- ${error}`);
+    console.log("=============================================");
+
+    response = `Sorry, the addition of "${classification_name}" to the classification list has failed. Please try again.`;
   } finally {
     return response;
   }
@@ -98,36 +105,6 @@ inventoryModel.getInventoryByInvId = async function (inv_id) {
   }
 };
 
-// Get single inventory based on make, model, color, description, price, year, and miles
-inventoryModel.getInventoryItemByColumns = async function (
-  inv_make,
-  inv_model,
-  inv_color,
-  inv_description,
-  inv_price,
-  inv_year,
-  inv_miles
-) {
-  const sql =
-    "SELECT * FROM inventory WHERE inv_make = $1 AND inv_model = $2 AND inv_color = $3 AND inv_description = $4 AND inv_price = $5 AND inv_year = $6 AND inv_miles = $7;";
-  try {
-    let yearString = inv_year.toString();
-    let getVehicle = await pool.query(sql, [
-      inv_make,
-      inv_model,
-      inv_color,
-      inv_description,
-      inv_price,
-      yearString,
-      inv_miles,
-    ]);
-    let result = getVehicle.rows;
-    return result;
-  } catch (error) {
-    console.error("getInventoryItemByColumns error " + error);
-  }
-};
-
 // Add new inventory
 inventoryModel.addNewInventory = async function (
   classification_id,
@@ -141,12 +118,13 @@ inventoryModel.addNewInventory = async function (
   inv_year,
   inv_miles
 ) {
-  let response = [];
+  let response;
+
   try {
     const sql =
-      "INSERT INTO inventory (classification_id, inv_make, inv_model, inv_color, inv_description, inv_image, inv_thumbnail, inv_price, inv_year, inv_miles) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10);";
+      "INSERT INTO inventory (classification_id, inv_make, inv_model, inv_color, inv_description, inv_image, inv_thumbnail, inv_price, inv_year, inv_miles) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10) RETURNING inv_id;";
 
-    await pool.query(sql, [
+    let addVehicleAndConfirm = await pool.query(sql, [
       classification_id,
       inv_make,
       inv_model,
@@ -159,26 +137,25 @@ inventoryModel.addNewInventory = async function (
       inv_miles,
     ]);
 
-    let result = inventoryModel.getInventoryItemByColumns(
-      inv_make,
-      inv_model,
-      inv_color,
-      inv_description,
-      inv_price,
-      inv_year,
-      inv_miles
-    );
+    const result = addVehicleAndConfirm.rows;
 
     if (result.length != 0) {
-      response.push(true);
-      response.push("");
+      response = "";
     } else {
-      response.push(false);
-      response.push("");
+      response = `Sorry, the addition of your "${inv_year} ${inv_make} ${inv_model}" to the inventory has failed. Please try again.`;
+
+      console.log("=============================================");
+      console.log(
+        "Error at inventory-model.addNewInventory: -- Failed to add inventory."
+      );
+      console.log("=============================================");
     }
   } catch (error) {
-    response.push(false);
-    response.push(error.message);
+    console.log("=============================================");
+    console.log(`Error at inventory-model.addNewInventory: -- ${error}`);
+    console.log("=============================================");
+
+    response = `Sorry, the addition of your "${inv_year} ${inv_make} ${inv_model}" to the inventory has failed. Please try again.`;
   } finally {
     return response;
   }

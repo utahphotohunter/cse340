@@ -1,6 +1,6 @@
 const express = require("express");
 const router = new express.Router();
-const invController = require("../controllers/invController");
+const inventoryController = require("../controllers/inventoryController");
 const utilities = require("../utilities");
 const inventoryValidator = require("../utilities/inventory-validation");
 
@@ -8,7 +8,7 @@ const inventoryValidator = require("../utilities/inventory-validation");
  *  Manangement Route
  * *********************************************** */
 // Route to build management view
-router.get("/", utilities.handleErrors(invController.buildManagement));
+router.get("/", utilities.handleErrors(inventoryController.buildManagement));
 
 /* *********************************************** *
  *  Classification Routes
@@ -16,7 +16,7 @@ router.get("/", utilities.handleErrors(invController.buildManagement));
 // Route to build classification management view
 router.get(
   "/manage/class",
-  utilities.handleErrors(invController.buildClassificationManager)
+  utilities.handleErrors(inventoryController.buildClassificationManager)
 );
 
 // Route to post new classification to db
@@ -24,7 +24,7 @@ router.post(
   "/manage/class",
   inventoryValidator.addClassificationRules(),
   inventoryValidator.checkClassificationData,
-  utilities.handleErrors(invController.addNewClassification)
+  utilities.handleErrors(inventoryController.addNewClassification)
 );
 
 /* *********************************************** *
@@ -33,7 +33,7 @@ router.post(
 // Route to build inventory management form
 router.get(
   "/manage/inv",
-  utilities.handleErrors(invController.buildInventoryManager)
+  utilities.handleErrors(inventoryController.buildInventoryManager)
 );
 
 // Route to post new inventory item to db
@@ -41,7 +41,7 @@ router.post(
   "/manage/inv",
   inventoryValidator.addInventoryRules(),
   inventoryValidator.checkInvData,
-  utilities.handleErrors(invController.addNewInventory)
+  utilities.handleErrors(inventoryController.addNewInventory)
 );
 
 /* *********************************************** *
@@ -50,13 +50,13 @@ router.post(
 // Route to build inventory by classification view
 router.get(
   "/type/:classificationId",
-  utilities.handleErrors(invController.buildByClassificationId)
+  utilities.handleErrors(inventoryController.buildByClassificationId)
 );
 
 // Route to build inventory detail view
 router.get(
   "/detail/:inv_id",
-  utilities.handleErrors(invController.buildByInvId)
+  utilities.handleErrors(inventoryController.buildByInvId)
 );
 
 module.exports = router;

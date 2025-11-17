@@ -119,6 +119,7 @@ validate.checkInvData = async (req, res, next) => {
     inv_miles,
     inv_color,
   } = req.body;
+  
   let errors = [];
   errors = validationResult(req);
   if (!errors.isEmpty()) {
@@ -165,8 +166,8 @@ validate.addClassificationRules = () => {
         const results = await inventoryModel.getClassificationByName(
           classification_name
         );
+
         const resultsLength = results.length;
-        // console.log(resultsLength);
         if (resultsLength != 0) {
           throw new Error(
             "Classification already exists. Please create a new classification."
@@ -182,27 +183,18 @@ validate.addClassificationRules = () => {
  *  add classification
  * *********************************************** */
 validate.checkClassificationData = async (req, res, next) => {
-  const { classification_name } = req.body;
-
   let errors = [];
   errors = validationResult(req);
 
   if (!errors.isEmpty()) {
-    console.log(errors);
-
-    const error = errors.errors[0].msg;
-
     let nav = await utilities.getNav();
     let classManager = await manager.buildClassificationForm();
-
-    req.flash("notice", error);
     res.render("inventory/add-classification", {
       errors,
       title: "Manage Classifications",
       nav,
       classManager,
     });
-
     return;
   }
   next();
