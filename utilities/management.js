@@ -26,7 +26,7 @@ Manager.buildClassificationForm = async function () {
   form += '<section class="container">';
   // label and input for classification_name
   form +=
-    '<label for="classification_name">Add Classification</label><input type="text" name="classification_name" id="classificationName" placeholder="Enter classification name here." required/>';
+    '<label for="classification_name">Add Classification</label><input type="text" name="classification_name" id="classification_name" placeholder="Enter classification name here." required/>';
   // article with input instructions
   form +=
     '<article class="container"><p>* Classification must not contain spaces or special characters.</p></article>';
