@@ -211,6 +211,7 @@ p {
 #footer {
   height: 70px;
   display: flex;
+  justify-content: space-between;
   align-items: end;
   background-color: var(--primary-color);
   color: var(--text-color);
