@@ -19,7 +19,6 @@ const pool = require("./database");
 const bodyParser = require("body-parser");
 const cookieParser = require("cookie-parser");
 
-
 /* *********************************************** *
  *  Middleware
  * *********************************************** */
@@ -47,6 +46,9 @@ app.use(function (req, res, next) {
 app.use(bodyParser.json());
 // for parsing application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: true }));
+app.use(cookieParser());
+// jwt middleware
+app.use(utilities.checkJWTToken);
 
 /* *********************************************** *
  *  View Engine and Templates
@@ -69,7 +71,6 @@ app.use("/account", utilities.handleErrors(accountRoute));
 app.use(async (req, res, next) => {
   next({ status: 404, message: "Sorry, we appear to have lost that page." });
 });
-app.use(cookieParser());
 
 /* *********************************************** *
  *  Express Error Handler
