@@ -1,0 +1,18 @@
+<!-- test if title exist -->
+<% if (title) { %>
+<h1><%= title %></h1>
+<% } else { res.redirect('/') } %> <%- messages() %>
+<!-- ---------------------------------------- -->
+<% if (errors) { %>
+<ul class="notice">
+  <% errors.array().forEach(error => { %>
+  <li><%= error.msg %></li>
+  <% }) %>
+</ul>
+<% } %>
+
+<section id="account-management-view" class="container">
+    <article>
+        <h2>You're logged in.</h2>
+    </article>
+</section>

@@ -4,6 +4,9 @@ const accountController = require("../controllers/accountController");
 const utilities = require("../utilities");
 const regValidate = require("../utilities/account-validation");
 
+// Route to build account management page
+router.get("/", utilities.handleErrors(accountController.buildManagement));
+
 // Route to build login page
 router.get("/login", utilities.handleErrors(accountController.buildLogin));
 
