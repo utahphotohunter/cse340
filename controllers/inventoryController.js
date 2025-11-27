@@ -241,16 +241,11 @@ inventoryController.addNewInventory = async function (req, res) {
  * *********************************************** */
 inventoryController.buildInventoryEditor = async function (req, res, next) {
   const inv_id = parseInt(req.params.inv_id)
-  console.log(inv_id)
   let nav = await utilities.getNav()
   const itemData = await invModel.getInventoryByInvId(inv_id)
   const invItem = itemData[0]
-  console.log(invItem)
   const classificationSelect = await manager.buildClassificationList(invItem.classification_id)
   const itemName = `${invItem.inv_make} ${invItem.inv_model}`
-  console.log("==================================")
-  console.log(itemName)
-  console.log("==================================")
   res.render("./inventory/edit-inventory", {
     title: "Edit " + itemName,
     nav,
