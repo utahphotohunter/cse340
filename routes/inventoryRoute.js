@@ -44,6 +44,12 @@ router.post(
   utilities.handleErrors(inventoryController.addNewInventory)
 );
 
+// route to manage inventory in db
+router.get(
+  "/getInventory/:classification_id",
+  utilities.handleErrors(inventoryController.getInventoryJSON)
+);
+
 /* *********************************************** *
  *  Type and Detail Routes
  * *********************************************** */
