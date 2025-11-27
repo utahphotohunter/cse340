@@ -1,0 +1,119 @@
+<!-- test if title exist -->
+<% if (title) { %>
+<h1><%= title %></h1>
+<% } else { res.redirect('/') } %> <%- messages() %>
+<!-- ---------------------------------------- -->
+<% if (errors) { %>
+<ul class="notice">
+  <% errors.array().forEach(error => { %>
+  <li><%= error.msg %></li>
+  <% }) %>
+</ul>
+<% } %>
+
+<section id="edit-inv-view" class="container form">
+  <div class="container">
+    <form id="editInvForm" action="/inv/manage/inv/update" method="post">
+      <section class="container">
+        <h2>Classification</h2>
+        <%- classificationList %>
+      </section>
+      <section class="container">
+        <h2>Details</h2>
+        <label for="inv_make">Make</label
+        ><input
+          type="text"
+          id="inv_make"
+          name="inv_make"
+          placeholder="vehicle make"
+          value="<%= locals.inv_make %>"
+          required
+        />
+        <label for="inv_model">Model</label>
+        <input
+          type="text"
+          id="inv_model"
+          name="inv_model"
+          placeholder="vehicle model"
+          value="<%= locals.inv_model %>"
+          required
+        />
+        <label for="inv_color">Color</label>
+        <input
+          type="text"
+          id="inv_color"
+          name="inv_color"
+          placeholder="vehicle color"
+          value="<%= locals.inv_color %>"
+          required
+        />
+        <label for="inv_description">Description</label>
+        <textarea
+          name="inv_description"
+          id="inv_description"
+          placeholder="vehicle description"
+          required
+        ><%= locals.inv_description %></textarea>
+      </section>
+      <section class="container">
+        <h2>Images</h2>
+        <label for="inv_image">Image Path</label>
+        <input
+          type="text"
+          id="inv_image"
+          name="inv_image"
+          value="/images/vehicles/no-image.png"
+          required
+        />
+        <label for="inv_thumbnail">Thumbnail Path</label>
+        <input
+          type="text"
+          id="inv_thumbnail"
+          name="inv_thumbnail"
+          value="/images/vehicles/no-image.png"
+          required
+        />
+      </section>
+      <section class="container">
+        <h2>Information</h2>
+        <label for="inv_price">Price</label>
+        <p>-increments of 100</p>
+        <input
+          type="number"
+          id="inv_price"
+          name="inv_price"
+          placeholder="vehcile price"
+          min="100"
+          step="100"
+          value="<%= locals.inv_price %>"
+          required
+        />
+        <label for="inv_year">Year</label>
+        <p>-1900 or later</p>
+        <input
+          type="number"
+          id="inv_year"
+          name="inv_year"
+          placeholder="vehicle year"
+          min="1900"
+          value="<%= locals.inv_year %>"
+          step="1"
+        />
+        <label for="inv_miles">Miles</label>
+        <p>-minimum 0</p>
+        <input
+          type="number"
+          id="inv_miles"
+          name="inv_miles"
+          placeholder="vehcile miles"
+          min="0"
+          value="<%= locals.inv_miles %>"
+          required
+        />
+      </section>
+      <section class="submit-area container">
+        <button type="submit" class="btn submit-btn">Update Vehicle</button>
+      </section>
+    </form>
+  </div>
+</section>

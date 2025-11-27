@@ -2,7 +2,6 @@ const { render } = require("ejs");
 const invModel = require("../models/inventory-model");
 const utilities = require("../utilities");
 const manager = require("../utilities/management");
-const inventoryModel = require("../models/inventory-model");
 
 const inventoryController = {};
 
@@ -65,7 +64,7 @@ inventoryController.buildClassificationManager = async function (
 inventoryController.addNewClassification = async function (req, res) {
   const { classification_name } = req.body;
   try {
-    const addClassResult = await inventoryModel.addNewClassification(
+    const addClassResult = await invModel.addNewClassification(
       classification_name
     );
     let nav = await utilities.getNav();
@@ -169,7 +168,7 @@ inventoryController.addNewInventory = async function (req, res) {
     classification_id
   );
   try {
-    const addInvResult = await inventoryModel.addNewInventory(
+    const addInvResult = await invModel.addNewInventory(
       classification_id,
       inv_make,
       inv_model,
@@ -235,6 +234,40 @@ inventoryController.addNewInventory = async function (req, res) {
       inv_miles,
     });
   }
+};
+
+/* *********************************************** *
+ *  Build Inventory Editor
+ * *********************************************** */
+inventoryController.buildInventoryEditor = async function (req, res, next) {
+  const inv_id = parseInt(req.params.inv_id)
+  console.log(inv_id)
+  let nav = await utilities.getNav()
+  const itemData = await invModel.getInventoryByInvId(inv_id)
+  const invItem = itemData[0]
+  console.log(invItem)
+  const classificationSelect = await manager.buildClassificationList(invItem.classification_id)
+  const itemName = `${invItem.inv_make} ${invItem.inv_model}`
+  console.log("==================================")
+  console.log(itemName)
+  console.log("==================================")
+  res.render("./inventory/edit-inventory", {
+    title: "Edit " + itemName,
+    nav,
+    classificationList: classificationSelect,
+    errors: null,
+    inv_id: invItem.inv_id,
+    inv_make: invItem.inv_make,
+    inv_model: invItem.inv_model,
+    inv_year: invItem.inv_year,
+    inv_description: invItem.inv_description,
+    inv_image: invItem.inv_image,
+    inv_thumbnail: invItem.inv_thumbnail,
+    inv_price: invItem.inv_price,
+    inv_miles: invItem.inv_miles,
+    inv_color: invItem.inv_color,
+    classification_id: invItem.classification_id
+  })
 };
 
 /* *********************************************** *
