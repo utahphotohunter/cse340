@@ -114,6 +114,7 @@
       <section class="submit-area container">
         <button type="submit" class="btn submit-btn">Update Vehicle</button>
       </section>
+      <input type="hidden" name="inv_id" <% if(locals.inv_id) { %> value="<%= locals.inv_id %>" <% } %>>
     </form>
   </div>
 </section>

@@ -240,12 +240,14 @@ inventoryController.addNewInventory = async function (req, res) {
  *  Build Inventory Editor
  * *********************************************** */
 inventoryController.buildInventoryEditor = async function (req, res, next) {
-  const inv_id = parseInt(req.params.inv_id)
-  let nav = await utilities.getNav()
-  const itemData = await invModel.getInventoryByInvId(inv_id)
-  const invItem = itemData[0]
-  const classificationSelect = await manager.buildClassificationList(invItem.classification_id)
-  const itemName = `${invItem.inv_make} ${invItem.inv_model}`
+  let nav = await utilities.getNav();
+  const inv_id = parseInt(req.params.inv_id);
+  const itemData = await invModel.getInventoryByInvId(inv_id);
+  const invItem = itemData[0];
+  const itemName = `${invItem.inv_make} ${invItem.inv_model}`;
+  const classificationSelect = await manager.buildClassificationList(
+  invItem.classification_id
+  );
   res.render("./inventory/edit-inventory", {
     title: "Edit " + itemName,
     nav,
@@ -261,8 +263,103 @@ inventoryController.buildInventoryEditor = async function (req, res, next) {
     inv_price: invItem.inv_price,
     inv_miles: invItem.inv_miles,
     inv_color: invItem.inv_color,
-    classification_id: invItem.classification_id
-  })
+    classification_id: invItem.classification_id,
+  });
+};
+
+/* *********************************************** *
+ *  Process updating inventory
+ * *********************************************** */
+inventoryController.updateInventory = async function (req, res) {
+  const {
+    classification_id,
+    inv_make,
+    inv_model,
+    inv_color,
+    inv_description,
+    inv_image,
+    inv_thumbnail,
+    inv_price,
+    inv_year,
+    inv_miles,
+  } = req.body;
+
+  const inv_id = parseInt(req.params.inv_id);
+  const itemData = await invModel.getInventoryByInvId(inv_id);
+  const invItem = itemData[0];
+  const itemName = `${invItem.inv_make} ${invItem.inv_model}`;
+  let nav = await utilities.getNav();
+  const managerOptions = await manager.buildManagement();
+  const classificationList = await manager.buildClassificationList(
+    classification_id
+  );
+  try {
+    const updateInvResult = await invModel.updateInventory(
+      classification_id,
+      inv_make,
+      inv_model,
+      inv_color,
+      inv_description,
+      inv_image,
+      inv_thumbnail,
+      inv_price,
+      inv_year,
+      inv_miles
+    );
+    if (updateInvResult != "") {
+      req.flash("notice", updateInvResult);
+      res.status(501);
+      res.render("inventory/edit-inventory", {
+        errors: null,
+        title: "Edit " + itemName,
+        nav,
+        classificationList,
+        classification_id,
+        inv_make,
+        inv_model,
+        inv_color,
+        inv_description,
+        inv_image,
+        inv_thumbnail,
+        inv_price,
+        inv_year,
+        inv_miles,
+      });
+    } else {
+      req.flash(
+        "notice",
+        `Success! Your "${inv_year} ${inv_make} ${inv_model}" has been updated in the inventory.`
+      );
+      res.status(201);
+      res.render("./inventory/management", {
+        title: "Manage Site",
+        nav,
+        managerOptions,
+      });
+    }
+  } catch (error) {
+    console.log("=============================================");
+    console.log(`Error at inventoryController.updateInventory: -- ${error}`);
+    console.log("=============================================");
+    req.flash("notice", "Sorry, an internal error occured. Please Try again.");
+    res.status(501);
+    res.render("inventory/edit-inventory", {
+      errors: null,
+      title: "Edit " + itemName,
+      nav,
+      classificationList,
+      classification_id,
+      inv_make,
+      inv_model,
+      inv_color,
+      inv_description,
+      inv_image,
+      inv_thumbnail,
+      inv_price,
+      inv_year,
+      inv_miles,
+    });
+  }
 };
 
 /* *********************************************** *

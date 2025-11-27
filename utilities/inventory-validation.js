@@ -5,6 +5,9 @@ const manager = require("../utilities/management");
 const validate = {};
 
 /* *********************************************** *
+ *  Inventory Functions
+ * *********************************************** */
+/* *********************************************** *
  *  rules for Manage Inventory
  * *********************************************** */
 validate.addInventoryRules = () => {
@@ -119,7 +122,7 @@ validate.checkInvData = async (req, res, next) => {
     inv_miles,
     inv_color,
   } = req.body;
-  
+
   let errors = [];
   errors = validationResult(req);
   if (!errors.isEmpty()) {
@@ -148,6 +151,59 @@ validate.checkInvData = async (req, res, next) => {
   next();
 };
 
+/* *********************************************** *
+ *  Check data and return errors or continue
+ *  to edit inventory
+ * *********************************************** */
+validate.checkUpdateInvData = async (req, res, next) => {
+  const {
+    classification_id,
+    inv_make,
+    inv_model,
+    inv_description,
+    inv_image,
+    inv_thumbnail,
+    inv_price,
+    inv_year,
+    inv_miles,
+    inv_color,
+  } = req.body;
+
+  let errors = [];
+  errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    let nav = await utilities.getNav();
+    let classificationList = await manager.buildClassificationList(
+      classification_id
+    );
+    const inv_id = parseInt(req.params.inv_id);
+    const itemData = await invModel.getInventoryByInvId(inv_id);
+    const invItem = itemData[0];
+    const itemName = `${invItem.inv_make} ${invItem.inv_model}`;
+    res.render("inventory/edit-inventory", {
+      errors,
+      title: "Edit " + itemName,
+      nav,
+      classificationList,
+      classification_id,
+      inv_make,
+      inv_model,
+      inv_description,
+      inv_image,
+      inv_thumbnail,
+      inv_price,
+      inv_year,
+      inv_miles,
+      inv_color,
+    });
+    return;
+  }
+  next();
+};
+
+/* *********************************************** *
+ *  Classification Functions
+ * *********************************************** */
 /* *********************************************** *
  *  rules for Add Classification
  * *********************************************** */
