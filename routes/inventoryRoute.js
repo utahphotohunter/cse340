@@ -50,7 +50,7 @@ router.get(
   utilities.handleErrors(inventoryController.getInventoryJSON)
 );
 
-// route to build the update inventory form
+// route to build the update inventory view
 router.get(
   "/edit/:inv_id",
   utilities.handleErrors(inventoryController.buildInventoryEditor)
@@ -63,6 +63,12 @@ router.post(
   inventoryValidator.checkUpdateData,
   utilities.handleErrors(inventoryController.updateInventory)
 );
+
+// route to build the delete inventory view
+router.get("/delete/:inv_id", utilities.handleErrors(inventoryController.buildInventoryDelete));
+
+// route to delete inventory in the db
+router.post("/delete/", utilities.handleErrors(inventoryController.deleteInventory));
 
 /* *********************************************** *
  *  Type and Detail Routes

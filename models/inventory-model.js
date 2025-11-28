@@ -204,4 +204,37 @@ inventoryModel.updateInventory = async function (
   }
 };
 
+// Update inventory
+inventoryModel.deleteInventory = async function (
+  inv_id
+) {
+  let response;
+  try {
+    const sql =
+      "DELETE FROM inventory WHERE inv_id = $1 RETURNING inv_id;";
+
+    let deleteVehicleAndConfirm = await pool.query(sql, [
+      inv_id
+    ]);
+    const result = deleteVehicleAndConfirm.rows;
+    if (result.length != 0) {
+      response = "";
+    } else {
+      response = `Sorry, the deletion of your "${inv_year} ${inv_make} ${inv_model}" from the inventory has failed. Please try again.`;
+      console.log("=============================================");
+      console.log(
+        "Error at inventory-model.deleteInventory: -- Failed to delete inventory."
+      );
+      console.log("=============================================");
+    }
+  } catch (error) {
+    console.log("=============================================");
+    console.log(`Error at inventory-model.deleteInventory: -- ${error}`);
+    console.log("=============================================");
+    response = `Sorry, the deletion of your "${inv_year} ${inv_make} ${inv_model}" from the inventory has failed. Please try again.`;
+  } finally {
+    return response;
+  }
+};
+
 module.exports = inventoryModel;

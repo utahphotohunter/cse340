@@ -196,6 +196,10 @@ p {
     color: white;
   }
 
+  & li:hover {
+    background-color: var(--accent-color);
+  }
+
   & li.current {
     background-color: var(--accent-color);
   }

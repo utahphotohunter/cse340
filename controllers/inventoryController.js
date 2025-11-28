@@ -70,6 +70,7 @@ inventoryController.addNewClassification = async function (req, res) {
     let nav = await utilities.getNav();
     const classManager = await manager.buildClassificationForm();
     const managerOptions = await manager.buildManagement();
+    const classificationSelect = await manager.buildClassificationList();
     if (addClassResult != "") {
       req.flash("notice", addClassResult);
       res.status(501);
@@ -89,6 +90,7 @@ inventoryController.addNewClassification = async function (req, res) {
         title: "Manage Site",
         nav,
         managerOptions,
+        classificationSelect,
       });
     }
   } catch (error) {
@@ -362,6 +364,95 @@ inventoryController.updateInventory = async function (req, res) {
       inv_price,
       inv_year,
       inv_miles,
+      inv_id,
+    });
+  }
+};
+
+/* *********************************************** *
+ *  Build Inventory Delete View
+ * *********************************************** */
+inventoryController.buildInventoryDelete = async function (req, res, next) {
+  let nav = await utilities.getNav();
+  const inv_id = parseInt(req.params.inv_id);
+  const itemData = await invModel.getInventoryByInvId(inv_id);
+  const invItem = itemData[0];
+  const itemName = `${invItem.inv_make} ${invItem.inv_model}`;
+  res.render("./inventory/delete-inventory", {
+    title: "Delete " + itemName,
+    nav,
+    errors: null,
+    inv_id: invItem.inv_id,
+    inv_make: invItem.inv_make,
+    inv_model: invItem.inv_model,
+    inv_year: invItem.inv_year,
+    inv_price: invItem.inv_price,
+  });
+};
+
+/* *********************************************** *
+ *  Process deleting inventory
+ * *********************************************** */
+inventoryController.deleteInventory = async function (req, res) {
+  const {
+    classification_id,
+    inv_make,
+    inv_model,
+    inv_price,
+    inv_year,
+    inv_id,
+  } = req.body;
+  const itemId = parseInt(inv_id);
+  const itemData = await invModel.getInventoryByInvId(itemId);
+  const invItem = itemData[0];
+  const itemName = `${invItem.inv_make} ${invItem.inv_model}`;
+  let nav = await utilities.getNav();
+  const managerOptions = await manager.buildManagement();
+  const classificationList = await manager.buildClassificationList(
+    classification_id
+  );
+  try {
+    const deleteInvResult = await invModel.deleteInventory(itemId);
+    if (deleteInvResult != "") {
+      req.flash("notice", deleteInvResult);
+      res.status(501);
+      res.render("inventory/delete-inventory", {
+        errors: null,
+        title: "Edit " + itemName,
+        nav,
+        inv_make,
+        inv_model,
+        inv_price,
+        inv_year,
+        inv_id,
+      });
+    } else {
+      req.flash(
+        "notice",
+        `Success! Your "${inv_year} ${inv_make} ${inv_model}" has been deleted from the inventory.`
+      );
+      res.status(201);
+      res.render("./inventory/management", {
+        title: "Manage Site",
+        nav,
+        managerOptions,
+        classificationSelect: classificationList,
+      });
+    }
+  } catch (error) {
+    console.log("=============================================");
+    console.log(`Error at inventoryController.deleteInventory: -- ${error}`);
+    console.log("=============================================");
+    req.flash("notice", "Sorry, an internal error occured. Please Try again.");
+    res.status(501);
+    res.render("inventory/delete-inventory", {
+      errors: null,
+      title: "Delete " + itemName,
+      nav,
+      inv_make,
+      inv_model,
+      inv_price,
+      inv_year,
       inv_id,
     });
   }

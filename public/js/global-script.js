@@ -1,10 +1,9 @@
 let url = window.location.href;
 let path = window.location.pathname;
-let type;
+let type = url[url.length - 1];
 let target;
 let identifier;
 if (url.includes("/inv/type/")) {
-  type = url[url.length - 1];
   identifier = `nav-${type}`;
   target = document.getElementById(identifier);
   localStorage.setItem("wayfinder", identifier);
@@ -12,7 +11,7 @@ if (url.includes("/inv/type/")) {
   identifier = "nav-0";
   target = document.getElementById(identifier);
   localStorage.setItem("wayfinder", identifier);
-} else {
+} else if (url.includes("inv/detail/")) {
   identifier = localStorage.getItem("wayfinder");
   target = document.getElementById(identifier);
 }
