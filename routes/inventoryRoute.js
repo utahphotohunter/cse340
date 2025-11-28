@@ -50,10 +50,18 @@ router.get(
   utilities.handleErrors(inventoryController.getInventoryJSON)
 );
 
-// route to modify inventory in db
+// route to build the update inventory form
 router.get(
   "/edit/:inv_id",
   utilities.handleErrors(inventoryController.buildInventoryEditor)
+);
+
+// route to update inventory in the db
+router.post(
+  "/update/",
+  inventoryValidator.addInventoryRules(),
+  inventoryValidator.checkUpdateData,
+  utilities.handleErrors(inventoryController.updateInventory)
 );
 
 /* *********************************************** *
