@@ -110,9 +110,11 @@
         />
       </section>
       <section class="submit-area container">
-        <button type="submit" class="btn submit-btn">Update Vehicle</button>
+        <button type="submit" class="btn submit-btn" disabled>Update Vehicle</button>
       </section>
       <input type="hidden" name="inv_id" <% if(locals.inv_id) { %> value="<%= locals.inv_id %>" <% } %>>
     </form>
   </div>
 </section>
+
+<script src="../../js/inv_update.js"></script>
