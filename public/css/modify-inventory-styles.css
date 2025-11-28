@@ -15,7 +15,8 @@
 /* ======================================== */
 /* add inventory view */
 /* ======================================== */
-#add-inv-view {
+#add-inv-view,
+#edit-inv-view {
   & form section {
     display: flex;
     flex-direction: column;
