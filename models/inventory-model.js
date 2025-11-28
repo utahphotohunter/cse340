@@ -151,4 +151,57 @@ inventoryModel.addNewInventory = async function (
   }
 };
 
+// Update inventory
+inventoryModel.updateInventory = async function (
+  classification_id,
+  inv_make,
+  inv_model,
+  inv_color,
+  inv_description,
+  inv_image,
+  inv_thumbnail,
+  inv_price,
+  inv_year,
+  inv_miles,
+  inv_id
+) {
+  let response;
+  try {
+    const sql =
+      "UPDATE inventory SET classification_id = $1, inv_make = $2, inv_model = $3, inv_color = $4, inv_description = $5, inv_image = $6, inv_thumbnail = $7, inv_price = $8, inv_year = $9, inv_miles = $10 WHERE inv_id = $11 RETURNING *;";
+
+    let updateVehicleAndConfirm = await pool.query(sql, [
+      classification_id,
+      inv_make,
+      inv_model,
+      inv_color,
+      inv_description,
+      inv_image,
+      inv_thumbnail,
+      inv_price,
+      inv_year,
+      inv_miles,
+      inv_id,
+    ]);
+    const result = updateVehicleAndConfirm.rows;
+    if (result.length != 0) {
+      response = "";
+    } else {
+      response = `Sorry, the update of your "${inv_year} ${inv_make} ${inv_model}" to the inventory has failed. Please try again.`;
+      console.log("=============================================");
+      console.log(
+        "Error at inventory-model.updateInventory: -- Failed to update inventory."
+      );
+      console.log("=============================================");
+    }
+  } catch (error) {
+    console.log("=============================================");
+    console.log(`Error at inventory-model.updateInventory: -- ${error}`);
+    console.log("=============================================");
+    response = `Sorry, the update of your "${inv_year} ${inv_make} ${inv_model}" to the inventory has failed. Please try again.`;
+  } finally {
+    return response;
+  }
+};
+
 module.exports = inventoryModel;
