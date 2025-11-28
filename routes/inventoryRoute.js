@@ -56,14 +56,6 @@ router.get(
   utilities.handleErrors(inventoryController.buildInventoryEditor)
 );
 
-// route to post updated inventory vehicle to db
-router.post(
-  "/update/",
-  inventoryValidator.addInventoryRules,
-  inventoryValidator.checkUpdateInvData,
-  utilities.handleErrors(inventoryController.updateInventory)
-);
-
 /* *********************************************** *
  *  Type and Detail Routes
  * *********************************************** */
