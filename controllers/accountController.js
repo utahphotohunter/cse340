@@ -10,6 +10,7 @@ const accountController = {};
  * *********************************************** */
 accountController.buildLogin = async function (req, res, next) {
   let nav = await utilities.getNav();
+  res.locals.loginLink = utilities.getHeaderLinks(req, res);
   res.render("./account/login", {
     title: "Login",
     nav,
@@ -19,6 +20,7 @@ accountController.buildLogin = async function (req, res, next) {
 
 accountController.buildRegistration = async function (req, res, next) {
   let nav = await utilities.getNav();
+  res.locals.loginLink = utilities.getHeaderLinks(req, res);
   res.render("account/register", {
     title: "Register",
     nav,
@@ -31,6 +33,8 @@ accountController.buildRegistration = async function (req, res, next) {
  * *********************************************** */
 accountController.buildManagement = async function (req, res, next) {
   let nav = await utilities.getNav();
+  // let name = await 
+  res.locals.loginLink = utilities.getHeaderLinks(req, res);
   res.render("account/management", {
     title: "Account Management",
     nav,
@@ -43,6 +47,7 @@ accountController.buildManagement = async function (req, res, next) {
  * *********************************************** */
 accountController.registerAccount = async function (req, res) {
   let nav = await utilities.getNav();
+  res.locals.loginLink = utilities.getHeaderLinks(req, res);
   const {
     account_firstname,
     account_lastname,
@@ -99,6 +104,7 @@ accountController.registerAccount = async function (req, res) {
  * *********************************************** */
 accountController.accountLogin = async function (req, res) {
   let nav = await utilities.getNav();
+  res.locals.loginLink = utilities.getHeaderLinks(req, res);
   const { account_email, account_password } = req.body;
   const accountData = await accountModel.getAccountByEmail(account_email);
   if (!accountData) {
@@ -119,6 +125,7 @@ accountController.accountLogin = async function (req, res) {
         process.env.ACCESS_TOKEN_SECRET,
         { expiresIn: 3600 * 1000 }
       );
+      res.cookie("firstName", accountData.account_firstname, { httpOnly: false });
       if (process.env.NODE_ENV === "development") {
         res.cookie("jwt", accessToken, { httpOnly: true, maxAge: 3600 * 1000 });
       } else {

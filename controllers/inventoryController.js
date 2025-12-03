@@ -10,6 +10,7 @@ const inventoryController = {};
  * *********************************************** */
 inventoryController.buildManagement = async function (req, res, next) {
   let nav = await utilities.getNav();
+  res.locals.loginLink = utilities.getHeaderLinks(req, res);
   const classificationSelect = await manager.buildClassificationList();
   const managerOptions = await manager.buildManagement();
   res.render("./inventory/management", {
@@ -32,6 +33,7 @@ inventoryController.buildByClassificationId = async function (req, res, next) {
   const data = await invModel.getInventoryByClassificationId(classification_id);
   const grid = await utilities.buildClassificationGrid(data);
   let nav = await utilities.getNav();
+  res.locals.loginLink = utilities.getHeaderLinks(req, res);
   const className = data[0].classification_name;
   res.render("./inventory/classification", {
     title: className + " vehicles",
@@ -49,6 +51,7 @@ inventoryController.buildClassificationManager = async function (
   next
 ) {
   let nav = await utilities.getNav();
+  res.locals.loginLink = utilities.getHeaderLinks(req, res);
   let classManager = await manager.buildClassificationForm();
   res.render("./inventory/add-classification", {
     errors: null,
@@ -68,6 +71,7 @@ inventoryController.addNewClassification = async function (req, res) {
       classification_name
     );
     let nav = await utilities.getNav();
+    res.locals.loginLink = utilities.getHeaderLinks(req, res);
     const classManager = await manager.buildClassificationForm();
     const managerOptions = await manager.buildManagement();
     const classificationSelect = await manager.buildClassificationList();
@@ -125,6 +129,7 @@ inventoryController.buildByInvId = async function (req, res, next) {
   const inv_id = req.params.inv_id;
   const data = await invModel.getInventoryByInvId(inv_id);
   let nav = await utilities.getNav();
+  res.locals.loginLink = utilities.getHeaderLinks(req, res);
   let d = data[0];
   res.render("./inventory/detail", {
     title: `${d.inv_year} ${d.inv_make} ${d.inv_model}`,
@@ -138,6 +143,7 @@ inventoryController.buildByInvId = async function (req, res, next) {
  * *********************************************** */
 inventoryController.buildInventoryManager = async function (req, res, next) {
   let nav = await utilities.getNav();
+  res.locals.loginLink = utilities.getHeaderLinks(req, res);
   let classificationList = await manager.buildClassificationList();
   res.render("./inventory/add-inventory", {
     errors: null,
@@ -165,6 +171,7 @@ inventoryController.addNewInventory = async function (req, res) {
   } = req.body;
 
   let nav = await utilities.getNav();
+  res.locals.loginLink = utilities.getHeaderLinks(req, res);
   const managerOptions = await manager.buildManagement();
   const classificationList = await manager.buildClassificationList(
     classification_id
@@ -244,6 +251,7 @@ inventoryController.addNewInventory = async function (req, res) {
  * *********************************************** */
 inventoryController.buildInventoryEditor = async function (req, res, next) {
   let nav = await utilities.getNav();
+  res.locals.loginLink = utilities.getHeaderLinks(req, res);
   const inv_id = parseInt(req.params.inv_id);
   const itemData = await invModel.getInventoryByInvId(inv_id);
   const invItem = itemData[0];
@@ -292,6 +300,7 @@ inventoryController.updateInventory = async function (req, res) {
   const invItem = itemData[0];
   const itemName = `${invItem.inv_make} ${invItem.inv_model}`;
   let nav = await utilities.getNav();
+  res.locals.loginLink = utilities.getHeaderLinks(req, res);
   const managerOptions = await manager.buildManagement();
   const classificationList = await manager.buildClassificationList(
     classification_id
@@ -374,6 +383,7 @@ inventoryController.updateInventory = async function (req, res) {
  * *********************************************** */
 inventoryController.buildInventoryDelete = async function (req, res, next) {
   let nav = await utilities.getNav();
+  res.locals.loginLink = utilities.getHeaderLinks(req, res);
   const inv_id = parseInt(req.params.inv_id);
   const itemData = await invModel.getInventoryByInvId(inv_id);
   const invItem = itemData[0];
@@ -407,6 +417,7 @@ inventoryController.deleteInventory = async function (req, res) {
   const invItem = itemData[0];
   const itemName = `${invItem.inv_make} ${invItem.inv_model}`;
   let nav = await utilities.getNav();
+  res.locals.loginLink = utilities.getHeaderLinks(req, res);
   const managerOptions = await manager.buildManagement();
   const classificationList = await manager.buildClassificationList(
     classification_id
