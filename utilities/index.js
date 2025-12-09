@@ -97,6 +97,9 @@ Util.checkJWTToken = (req, res, next) => {
       process.env.ACCESS_TOKEN_SECRET,
       function (err, accountData) {
         if (err) {
+          if (req.cookies.accountInfo) {
+            res.clearCookie("accountInfo");
+          }
           req.flash("Please log in");
           res.clearCookie("jwt");
           return res.redirect("/account/login");
@@ -114,27 +117,32 @@ Util.checkJWTToken = (req, res, next) => {
 /* *********************************************** *
  *  Check Login
  * *********************************************** */
- Util.checkLogin = (req, res, next) => {
+Util.checkLogin = (req, res, next) => {
   if (res.locals.loggedin) {
-    next()
+    next();
   } else {
-    req.flash("notice", "Please log in.")
-    return res.redirect("/account/login")
+    req.flash("notice", "Please log in.");
+    return res.redirect("/account/login");
   }
- }
+};
 
- /* *********************************************** *
+/* *********************************************** *
  *  Get Header Links
  * *********************************************** */
 Util.getHeaderLinks = (req, res) => {
   let loginLink;
-  if (req.cookies.jwt) {
-    loginLink =  `<a title="Manage Account" href="/account">Welcome ${req.cookies.firstName}!</a><a title="Click to log out" href="/account/login">logout</a>`;
+
+  if (req.cookies.jwt && req.cookies.accountInfo) {
+    const rawCookie = req.cookies.accountInfo;
+    const accountData = JSON.parse(rawCookie);
+    const firstName = accountData.firstName;
+    loginLink = `<a title="Manage Account" href="/account">Welcome ${firstName}!</a><a title="Click to log out" href="/account/login">logout</a>`;
     // loginLink =  `<a title="Manage Account" href="/account">Welcome!</a><a title="Click to log out" href="/account/login">logout</a>`;
   } else {
-    loginLink = '<a title="Click to log in" href="/account/login">My Account</a>';
+    loginLink =
+      '<a title="Click to log in" href="/account/login">My Account</a>';
   }
   return loginLink;
-}
+};
 
 module.exports = Util;

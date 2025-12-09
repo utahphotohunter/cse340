@@ -6,37 +6,13 @@ require("dotenv").config();
 const accountController = {};
 
 /* *********************************************** *
- *  Deliver login view
+ *  Deliver registration view
  * *********************************************** */
-accountController.buildLogin = async function (req, res, next) {
-  let nav = await utilities.getNav();
-  res.locals.loginLink = utilities.getHeaderLinks(req, res);
-  res.render("./account/login", {
-    title: "Login",
-    nav,
-    errors: null,
-  });
-};
-
 accountController.buildRegistration = async function (req, res, next) {
   let nav = await utilities.getNav();
   res.locals.loginLink = utilities.getHeaderLinks(req, res);
   res.render("account/register", {
     title: "Register",
-    nav,
-    errors: null,
-  });
-};
-
-/* *********************************************** *
- *  Deliver Account Management View
- * *********************************************** */
-accountController.buildManagement = async function (req, res, next) {
-  let nav = await utilities.getNav();
-  // let name = await 
-  res.locals.loginLink = utilities.getHeaderLinks(req, res);
-  res.render("account/management", {
-    title: "Account Management",
     nav,
     errors: null,
   });
@@ -100,6 +76,19 @@ accountController.registerAccount = async function (req, res) {
 };
 
 /* *********************************************** *
+ *  Deliver login view
+ * *********************************************** */
+accountController.buildLogin = async function (req, res, next) {
+  let nav = await utilities.getNav();
+  res.locals.loginLink = utilities.getHeaderLinks(req, res);
+  res.render("./account/login", {
+    title: "Login",
+    nav,
+    errors: null,
+  });
+};
+
+/* *********************************************** *
  *  Process login request
  * *********************************************** */
 accountController.accountLogin = async function (req, res) {
@@ -107,6 +96,7 @@ accountController.accountLogin = async function (req, res) {
   res.locals.loginLink = utilities.getHeaderLinks(req, res);
   const { account_email, account_password } = req.body;
   const accountData = await accountModel.getAccountByEmail(account_email);
+
   if (!accountData) {
     req.flash("notice", "Please check your credentials and try again.");
     res.status(400).render("account/login", {
@@ -117,23 +107,58 @@ accountController.accountLogin = async function (req, res) {
     });
     return;
   }
+
   try {
     if (await bcrypt.compare(account_password, accountData.account_password)) {
       delete accountData.account_password;
+
       const accessToken = jwt.sign(
         accountData,
         process.env.ACCESS_TOKEN_SECRET,
         { expiresIn: 3600 * 1000 }
       );
-      res.cookie("firstName", accountData.account_firstname, { httpOnly: false });
+
+      res.cookie(
+        "accountInfo",
+        JSON.stringify({
+          firstName: accountData.firstName,
+          lastName: accountData.lastName,
+          accountType: accountData.accountType,
+        }),
+        { httpOnly: true, maxAge: 3600 * 1000 }
+      );
+
       if (process.env.NODE_ENV === "development") {
         res.cookie("jwt", accessToken, { httpOnly: true, maxAge: 3600 * 1000 });
+        res.cookie(
+          "accountInfo",
+          JSON.stringify({
+            firstName: accountData.account_firstname,
+            lastName: accountData.account_lastname,
+            accountType: accountData.account_type,
+          }),
+          { httpOnly: true, maxAge: 3600 * 1000 }
+        );
       } else {
         res.cookie("jwt", accessToken, {
           httpOnly: true,
           secure: true,
           maxAge: 3600 * 1000,
         });
+
+        res.cookie(
+          "accountInfo",
+          JSON.stringify({
+            firstName: accountData.firstName,
+            lastName: accountData.lastName,
+            accountType: accountData.accountType,
+          }),
+          {
+            httpOnly: true,
+            secure: true,
+            maxAge: 3600 * 1000,
+          }
+        );
       }
       return res.redirect("/account/");
     } else {
@@ -141,6 +166,7 @@ accountController.accountLogin = async function (req, res) {
         "message notice",
         "Please check your credentials and try again."
       );
+
       res.status(400).render("account/login", {
         title: "Login",
         nav,
@@ -151,6 +177,20 @@ accountController.accountLogin = async function (req, res) {
   } catch (error) {
     throw new Error("Access Forbidden");
   }
+};
+
+/* *********************************************** *
+ *  Deliver Account Management View
+ * *********************************************** */
+accountController.buildManagement = async function (req, res, next) {
+  let nav = await utilities.getNav();
+  // let name = await
+  res.locals.loginLink = utilities.getHeaderLinks(req, res);
+  res.render("account/management", {
+    title: "Account Management",
+    nav,
+    errors: null,
+  });
 };
 
 module.exports = accountController;

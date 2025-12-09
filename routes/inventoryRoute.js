@@ -8,7 +8,7 @@ const inventoryValidator = require("../utilities/inventory-validation");
  *  Manangement Route
  * *********************************************** */
 // Route to build management view
-router.get("/", utilities.handleErrors(inventoryController.buildManagement));
+router.get("/", utilities.checkJWTToken, utilities.handleErrors(inventoryController.buildManagement));
 
 /* *********************************************** *
  *  Classification Routes
