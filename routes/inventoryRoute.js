@@ -8,7 +8,12 @@ const inventoryValidator = require("../utilities/inventory-validation");
  *  Manangement Route
  * *********************************************** */
 // Route to build management view
-router.get("/", utilities.checkJWTToken, utilities.handleErrors(inventoryController.buildManagement));
+router.get(
+  "/",
+  utilities.checkJWTToken,
+  utilities.checkAccess("Employee"),
+  utilities.handleErrors(inventoryController.buildManagement)
+);
 
 /* *********************************************** *
  *  Classification Routes
@@ -16,12 +21,16 @@ router.get("/", utilities.checkJWTToken, utilities.handleErrors(inventoryControl
 // Route to build classification management view
 router.get(
   "/manage/class",
+  utilities.checkJWTToken,
+  utilities.checkAccess("Employee"),
   utilities.handleErrors(inventoryController.buildClassificationManager)
 );
 
 // Route to post new classification to db
 router.post(
   "/manage/class",
+  utilities.checkJWTToken,
+  utilities.checkAccess("Employee"),
   inventoryValidator.addClassificationRules(),
   inventoryValidator.checkClassificationData,
   utilities.handleErrors(inventoryController.addNewClassification)
@@ -33,12 +42,16 @@ router.post(
 // Route to build inventory management form
 router.get(
   "/manage/inv",
+  utilities.checkJWTToken,
+  utilities.checkAccess("Employee"),
   utilities.handleErrors(inventoryController.buildInventoryManager)
 );
 
 // Route to post new inventory item to db
 router.post(
   "/manage/inv",
+  utilities.checkJWTToken,
+  utilities.checkAccess("Employee"),
   inventoryValidator.addInventoryRules(),
   inventoryValidator.checkInvData,
   utilities.handleErrors(inventoryController.addNewInventory)
@@ -47,28 +60,39 @@ router.post(
 // route to manage inventory in db
 router.get(
   "/getInventory/:classification_id",
+  utilities.checkJWTToken, utilities.checkAccess("Employee"),
   utilities.handleErrors(inventoryController.getInventoryJSON)
 );
 
 // route to build the update inventory view
 router.get(
   "/edit/:inv_id",
+  utilities.checkJWTToken, utilities.checkAccess("Employee"),
   utilities.handleErrors(inventoryController.buildInventoryEditor)
 );
 
 // route to update inventory in the db
 router.post(
   "/update/",
+  utilities.checkJWTToken, utilities.checkAccess("Employee"),
   inventoryValidator.addInventoryRules(),
   inventoryValidator.checkUpdateData,
   utilities.handleErrors(inventoryController.updateInventory)
 );
 
 // route to build the delete inventory view
-router.get("/delete/:inv_id", utilities.handleErrors(inventoryController.buildInventoryDelete));
+router.get(
+  "/delete/:inv_id",
+  utilities.checkJWTToken, utilities.checkAccess("Employee"),
+  utilities.handleErrors(inventoryController.buildInventoryDelete)
+);
 
 // route to delete inventory in the db
-router.post("/delete/", utilities.handleErrors(inventoryController.deleteInventory));
+router.post(
+  "/delete/",
+  utilities.checkJWTToken, utilities.checkAccess("Employee"),
+  utilities.handleErrors(inventoryController.deleteInventory)
+);
 
 /* *********************************************** *
  *  Type and Detail Routes

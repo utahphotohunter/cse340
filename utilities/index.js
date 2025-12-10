@@ -127,6 +127,41 @@ Util.checkLogin = (req, res, next) => {
 };
 
 /* *********************************************** *
+ *  Check Access Permisssions
+ * *********************************************** */
+Util.checkAccess = (accessLevel) => {
+  return (req, res, next) => {
+    if (!req.cookies.accountInfo) {
+      req.flash("notice", "Restricted Access. Please log in.");
+      return res.redirect("/account/login");
+    } else {
+      const rawCookie = req.cookies.accountInfo;
+      const accountData = JSON.parse(rawCookie);
+      const accountType = accountData.accountType;
+
+      if (accessLevel == "Admin") {
+        if (accountType == "Admin") {
+          next();
+        } else {
+          req.flash("notice", "Restricted Access. Please log in.");
+          return res.redirect("/account/login");
+        }
+      } else if (accessLevel == "Employee") {
+        if (accountType == "Admin" || accountType == "Employee") {
+          next();
+        } else {
+          req.flash("notice", "Restricted Access. Please log in.");
+          return res.redirect("/account/login");
+        }
+      } else {
+        req.flash("notice", "Restricted Access. Please log in.");
+        return res.redirect("/account/login");
+      }
+    }
+  };
+};
+
+/* *********************************************** *
  *  Get Header Links
  * *********************************************** */
 Util.getHeaderLinks = (req, res) => {
