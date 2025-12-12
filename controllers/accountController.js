@@ -187,18 +187,18 @@ accountController.buildManagement = async function (req, res, next) {
   if (req.cookies.accountInfo) {
     const rawCookie = req.cookies.accountInfo;
     const accountData = JSON.parse(rawCookie);
-    console.log("************************************");
-    console.log(accountData);
-    console.log("************************************");
     const accountType = accountData.accountType;
     const firstName = accountData.firstName;
-    let welcomeMessage;
-    if (accountType == "Client") {
-      welcomeMessage = `<h2>Welcome ${firstName}</h2>`;
-    } else if (accountType == "Admin" || accountType == "Employee") {
+    // res.locals.account_id = 
+    let welcomeMessage = `
+        <h2>Welcome ${firstName}</h2>
+        <p><a href="/account/update" title="Update Account" class="btn">Update Account Information</a></p>
+      `;
+    if (accountType == "Admin" || accountType == "Employee") {
       welcomeMessage = `<h2>Welcome ${firstName}</h2>
+      <p><a href="/account/update" title="Update Account" class="btn">Update Account Information</a></p>
       <h3>Inventory Management</h3>
-      <p><a href="/inv">Manage Inventory</a></p>
+      <p><a href="/inv" title="Manage Inventory" class="btn">Manage Inventory</a></p>
       `;
     }
     res.locals.loginLink = utilities.getHeaderLinks(req, res);
@@ -218,5 +218,15 @@ accountController.buildManagement = async function (req, res, next) {
     });
   }
 };
+
+/* *********************************************** *
+ *  Deliver Account Update View
+ * *********************************************** */
+accountController.buildUpdate = async function (req, res, next) {};
+
+/* *********************************************** *
+ *  Process Account Update
+ * *********************************************** */
+accountController.processUpdate = async function (req, res) {};
 
 module.exports = accountController;

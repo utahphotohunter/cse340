@@ -166,16 +166,14 @@ Util.checkAccess = (accessLevel) => {
  * *********************************************** */
 Util.getHeaderLinks = (req, res) => {
   let loginLink;
-
   if (req.cookies.jwt && req.cookies.accountInfo) {
     const rawCookie = req.cookies.accountInfo;
     const accountData = JSON.parse(rawCookie);
     const firstName = accountData.firstName;
-    console.log("====================================")
-    console.log("firstName")
-    console.log("====================================")
-    loginLink = `<a title="Manage Account" href="/account">Welcome ${firstName}!</a> <a title="Click to log out" href="/account/login">logout</a>`;
-    // loginLink =  `<a title="Manage Account" href="/account">Welcome!</a><a title="Click to log out" href="/account/login">logout</a>`;
+    console.log("====================================");
+    console.log("firstName");
+    console.log("====================================");
+    loginLink = `<a title="Manage Account" href="/account">Welcome ${firstName}!</a> <a title="Click to log out" href="/account/login">Logout</a>`;
   } else {
     loginLink =
       '<a title="Click to log in" href="/account/login">My Account</a>';
