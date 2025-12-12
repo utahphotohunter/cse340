@@ -121,9 +121,9 @@ accountController.accountLogin = async function (req, res) {
       res.cookie(
         "accountInfo",
         JSON.stringify({
-          firstName: accountData.firstName,
-          lastName: accountData.lastName,
-          accountType: accountData.accountType,
+          firstName: accountData.first_Name,
+          lastName: accountData.last_Name,
+          accountType: accountData.account_Type,
         }),
         { httpOnly: true, maxAge: 3600 * 1000 }
       );
@@ -184,13 +184,39 @@ accountController.accountLogin = async function (req, res) {
  * *********************************************** */
 accountController.buildManagement = async function (req, res, next) {
   let nav = await utilities.getNav();
-  // let name = await
-  res.locals.loginLink = utilities.getHeaderLinks(req, res);
-  res.render("account/management", {
-    title: "Account Management",
-    nav,
-    errors: null,
-  });
+  if (req.cookies.accountInfo) {
+    const rawCookie = req.cookies.accountInfo;
+    const accountData = JSON.parse(rawCookie);
+    console.log("************************************");
+    console.log(accountData);
+    console.log("************************************");
+    const accountType = accountData.accountType;
+    const firstName = accountData.firstName;
+    let welcomeMessage;
+    if (accountType == "Client") {
+      welcomeMessage = `<h2>Welcome ${firstName}</h2>`;
+    } else if (accountType == "Admin" || accountType == "Employee") {
+      welcomeMessage = `<h2>Welcome ${firstName}</h2>
+      <h3>Inventory Management</h3>
+      <p><a href="/inv">Manage Inventory</a></p>
+      `;
+    }
+    res.locals.loginLink = utilities.getHeaderLinks(req, res);
+    res.render("account/management", {
+      title: "Account Management",
+      nav,
+      welcomeMessage: welcomeMessage,
+      errors: null,
+    });
+  } else {
+    req.flash("message notice", "Please check your credentials and try again.");
+    res.status(400).render("account/login", {
+      title: "Login",
+      nav,
+      errors: null,
+      account_email,
+    });
+  }
 };
 
 module.exports = accountController;

@@ -171,7 +171,10 @@ Util.getHeaderLinks = (req, res) => {
     const rawCookie = req.cookies.accountInfo;
     const accountData = JSON.parse(rawCookie);
     const firstName = accountData.firstName;
-    loginLink = `<a title="Manage Account" href="/account">Welcome ${firstName}!</a><a title="Click to log out" href="/account/login">logout</a>`;
+    console.log("====================================")
+    console.log("firstName")
+    console.log("====================================")
+    loginLink = `<a title="Manage Account" href="/account">Welcome ${firstName}!</a> <a title="Click to log out" href="/account/login">logout</a>`;
     // loginLink =  `<a title="Manage Account" href="/account">Welcome!</a><a title="Click to log out" href="/account/login">logout</a>`;
   } else {
     loginLink =
