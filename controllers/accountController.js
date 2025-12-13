@@ -117,48 +117,14 @@ accountController.accountLogin = async function (req, res) {
         process.env.ACCESS_TOKEN_SECRET,
         { expiresIn: 3600 * 1000 }
       );
-
-      res.cookie(
-        "accountInfo",
-        JSON.stringify({
-          firstName: accountData.first_Name,
-          lastName: accountData.last_Name,
-          accountType: accountData.account_Type,
-        }),
-        { httpOnly: true, maxAge: 3600 * 1000 }
-      );
-
       if (process.env.NODE_ENV === "development") {
         res.cookie("jwt", accessToken, { httpOnly: true, maxAge: 3600 * 1000 });
-        res.cookie(
-          "accountInfo",
-          JSON.stringify({
-            firstName: accountData.account_firstname,
-            lastName: accountData.account_lastname,
-            accountType: accountData.account_type,
-          }),
-          { httpOnly: true, maxAge: 3600 * 1000 }
-        );
       } else {
         res.cookie("jwt", accessToken, {
           httpOnly: true,
           secure: true,
           maxAge: 3600 * 1000,
         });
-
-        res.cookie(
-          "accountInfo",
-          JSON.stringify({
-            firstName: accountData.firstName,
-            lastName: accountData.lastName,
-            accountType: accountData.accountType,
-          }),
-          {
-            httpOnly: true,
-            secure: true,
-            maxAge: 3600 * 1000,
-          }
-        );
       }
       return res.redirect("/account/");
     } else {
@@ -184,18 +150,18 @@ accountController.accountLogin = async function (req, res) {
  * *********************************************** */
 accountController.buildManagement = async function (req, res, next) {
   let nav = await utilities.getNav();
-  if (req.cookies.accountInfo) {
-    const rawCookie = req.cookies.accountInfo;
-    const accountData = JSON.parse(rawCookie);
-    const accountType = accountData.accountType;
-    const firstName = accountData.firstName;
-    // res.locals.account_id = 
-    let welcomeMessage = `
+  if (req.cookies.jwt) {
+    const rawAccountData = req.cookies.jwt;
+    const secret = process.env.ACCESS_TOKEN_SECRET;
+    const accountData = jwt.verify(rawAccountData, secret);
+    const accountType = accountData.account_type;
+    const firstName = accountData.account_firstname;
+    let content = `
         <h2>Welcome ${firstName}</h2>
         <p><a href="/account/update" title="Update Account" class="btn">Update Account Information</a></p>
       `;
     if (accountType == "Admin" || accountType == "Employee") {
-      welcomeMessage = `<h2>Welcome ${firstName}</h2>
+      content = `<h2>Welcome ${firstName}</h2>
       <p><a href="/account/update" title="Update Account" class="btn">Update Account Information</a></p>
       <h3>Inventory Management</h3>
       <p><a href="/inv" title="Manage Inventory" class="btn">Manage Inventory</a></p>
@@ -205,7 +171,7 @@ accountController.buildManagement = async function (req, res, next) {
     res.render("account/management", {
       title: "Account Management",
       nav,
-      welcomeMessage: welcomeMessage,
+      content: content,
       errors: null,
     });
   } else {
@@ -222,7 +188,20 @@ accountController.buildManagement = async function (req, res, next) {
 /* *********************************************** *
  *  Deliver Account Update View
  * *********************************************** */
-accountController.buildUpdate = async function (req, res, next) {};
+accountController.buildUpdate = async function (req, res, next) {
+  const rawAccountData = req.cookies.jwt;
+  const secret = process.env.ACCESS_TOKEN_SECRET;
+  const accountData = jwt.verify(rawAccountData, secret);
+  const accountId = accountData.account_id;
+  let nav = await utilities.getNav();
+  res.locals.loginLink = utilities.getHeaderLinks(req, res);
+  res.render("./account/update", {
+    title: "Account Update",
+    nav,
+    errors: null,
+    accountId,
+  });
+};
 
 /* *********************************************** *
  *  Process Account Update

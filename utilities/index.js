@@ -97,9 +97,6 @@ Util.checkJWTToken = (req, res, next) => {
       process.env.ACCESS_TOKEN_SECRET,
       function (err, accountData) {
         if (err) {
-          if (req.cookies.accountInfo) {
-            res.clearCookie("accountInfo");
-          }
           req.flash("Please log in");
           res.clearCookie("jwt");
           return res.redirect("/account/login");
@@ -131,13 +128,14 @@ Util.checkLogin = (req, res, next) => {
  * *********************************************** */
 Util.checkAccess = (accessLevel) => {
   return (req, res, next) => {
-    if (!req.cookies.accountInfo) {
+    if (!req.cookies.jwt) {
       req.flash("notice", "Restricted Access. Please log in.");
       return res.redirect("/account/login");
     } else {
-      const rawCookie = req.cookies.accountInfo;
-      const accountData = JSON.parse(rawCookie);
-      const accountType = accountData.accountType;
+      const rawAccountData = req.cookies.jwt;
+      const secret = process.env.ACCESS_TOKEN_SECRET;
+      const accountData = jwt.verify(rawAccountData, secret);
+      const accountType = accountData.account_type;
 
       if (accessLevel == "Admin") {
         if (accountType == "Admin") {
@@ -166,10 +164,11 @@ Util.checkAccess = (accessLevel) => {
  * *********************************************** */
 Util.getHeaderLinks = (req, res) => {
   let loginLink;
-  if (req.cookies.jwt && req.cookies.accountInfo) {
-    const rawCookie = req.cookies.accountInfo;
-    const accountData = JSON.parse(rawCookie);
-    const firstName = accountData.firstName;
+  if (req.cookies.jwt) {
+    const rawAccountData = req.cookies.jwt;
+    const secret = process.env.ACCESS_TOKEN_SECRET;
+    const accountData = jwt.verify(rawAccountData, secret);
+    const firstName = accountData.account_firstname;
     console.log("====================================");
     console.log("firstName");
     console.log("====================================");

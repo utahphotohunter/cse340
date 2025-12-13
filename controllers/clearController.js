@@ -11,10 +11,6 @@ accountController.clearCookies = async function (req, res, next) {
     httpOnly: true,
     path: "/",
   });
-  res.clearCookie("accountInfo", {
-    httpOnly: true,
-    path: "/",
-  });
   req.flash("notice", "cookies cleared");
   res.redirect("/").status(200);
 };
