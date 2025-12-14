@@ -195,6 +195,9 @@ accountController.buildUpdate = async function (req, res, next) {
   const accountId = accountData.account_id;
   let nav = await utilities.getNav();
   res.locals.loginLink = utilities.getHeaderLinks(req, res);
+  res.locals.firstName = accountData.account_firstname;
+  res.locals.lastName = accountData.account_lastname;
+  res.locals.email = accountData.account_email;
   res.render("./account/update", {
     title: "Account Update",
     nav,
