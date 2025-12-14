@@ -169,15 +169,57 @@ Util.getHeaderLinks = (req, res) => {
     const secret = process.env.ACCESS_TOKEN_SECRET;
     const accountData = jwt.verify(rawAccountData, secret);
     const firstName = accountData.account_firstname;
-    console.log("====================================");
-    console.log("firstName");
-    console.log("====================================");
     loginLink = `<a title="Manage Account" href="/account">Welcome ${firstName}!</a> <a title="Click to log out" href="/account/login">Logout</a>`;
   } else {
     loginLink =
-      '<a title="Click to log in" href="/account/login">My Account</a>';
+      '<a title="Click to log in" href="/account/login">Login</a>';
   }
   return loginLink;
+};
+
+/* *********************************************** *
+ *  Set JWT Cookie
+ * *********************************************** */
+Util.setAccountCookie = (req, res, accountData) => {
+  const accessToken = jwt.sign(accountData, process.env.ACCESS_TOKEN_SECRET, {
+    expiresIn: 3600 * 1000,
+  });
+  if (process.env.NODE_ENV === "development") {
+    return res.cookie("jwt", accessToken, {
+      httpOnly: true,
+      maxAge: 3600 * 1000,
+    });
+  } else {
+    return res.cookie("jwt", accessToken, {
+      httpOnly: true,
+      secure: true,
+      maxAge: 3600 * 1000,
+    });
+  }
+};
+
+/* *********************************************** *
+ *  Read JWT Cookie
+ * *********************************************** */
+Util.readAccountCookie = (req, res) => {
+  if (req.cookies.jwt) {
+    const rawAccountData = req.cookies.jwt;
+    const secret = process.env.ACCESS_TOKEN_SECRET;
+    const accountData = jwt.verify(rawAccountData, secret);
+    return accountData;
+  } else {
+    return false;
+  }
+};
+
+/* *********************************************** *
+ *  Clear JWT Cookie
+ * *********************************************** */
+Util.clearAccountCookie = (req, res) => {
+  return res.clearCookie("jwt", {
+    httpOnly: true,
+    path: "/",
+  });
 };
 
 module.exports = Util;

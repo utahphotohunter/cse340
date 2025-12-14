@@ -150,10 +150,8 @@ accountController.accountLogin = async function (req, res) {
  * *********************************************** */
 accountController.buildManagement = async function (req, res, next) {
   let nav = await utilities.getNav();
-  if (req.cookies.jwt) {
-    const rawAccountData = req.cookies.jwt;
-    const secret = process.env.ACCESS_TOKEN_SECRET;
-    const accountData = jwt.verify(rawAccountData, secret);
+  const accountData = utilities.readAccountCookie(req, res);
+  if (accountData) {
     const accountType = accountData.account_type;
     const firstName = accountData.account_firstname;
     let content = `
@@ -189,9 +187,7 @@ accountController.buildManagement = async function (req, res, next) {
  *  Deliver Account Update View
  * *********************************************** */
 accountController.buildUpdate = async function (req, res, next) {
-  const rawAccountData = req.cookies.jwt;
-  const secret = process.env.ACCESS_TOKEN_SECRET;
-  const accountData = jwt.verify(rawAccountData, secret);
+  const accountData = utilities.readAccountCookie(req, res);
   const accountId = accountData.account_id;
   let nav = await utilities.getNav();
   res.locals.loginLink = utilities.getHeaderLinks(req, res);
@@ -209,6 +205,34 @@ accountController.buildUpdate = async function (req, res, next) {
 /* *********************************************** *
  *  Process Account Update
  * *********************************************** */
-accountController.processUpdate = async function (req, res) {};
+accountController.updateAccount = async function (req, res) {
+  const { account_firstname, account_lastname, account_email, account_id } =
+    req.body;
+  accountModel.updateAccount(
+    account_firstname,
+    account_lastname,
+    account_email,
+    account_id
+  );
+
+  const accountCurrent = utilities.readAccountCookie(req, res);
+
+  const accountData = {
+    account_id: accountCurrent.account_id,
+    account_firstname: account_firstname,
+    account_lastname: account_lastname,
+    account_email: account_email,
+    account_type: accountCurrent.account_type
+  };
+
+  console.log("================================")
+  console.log(accountData)
+  console.log("================================")
+
+  utilities.clearAccountCookie(req, res);
+  utilities.setAccountCookie(req, res, accountData);
+  req.flash("notice", "Account Information Updated!");
+  res.status(201).redirect("./");
+};
 
 module.exports = accountController;

@@ -135,4 +135,32 @@ validate.checkLoginData = async (req, res, next) => {
   next();
 };
 
+/* *********************************************** *
+ *  Confirm email belongs to account or is not
+ *  in use with another account
+ * *********************************************** */
+validate.checkAccountUpdate = async (req, res, next) => {
+  const { account_email, account_id } = req.body;
+  const emailExists = await accountModel.checkExistingEmail(account_email);
+  if (emailExists) {
+    const accountData = await accountModel.getAccountByEmail(account_email);
+    // if (accountData.account_id !== parseInt(account_id)) {
+    if (accountData.account_id !== account_id) {
+      req.flash(
+        "notice",
+        "An account already exists with the provided email. Please provide an alternate email address."
+      );
+      res.status(400).render("./account/update", {
+        title: "Account Update",
+        nav,
+        errors: null,
+        accountId,
+      });
+      return;
+    } else {
+      next();
+    }
+  }
+};
+
 module.exports = validate;

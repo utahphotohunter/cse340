@@ -42,8 +42,8 @@ router.get("/update", utilities.handleErrors(accountController.buildUpdate));
 // POST route for updating account
 router.post(
   "/update",
-  regValidate.registrationRules(),
-  regValidate.checkRegData,
+  // regValidate.registrationRules(),
+  // regValidate.checkRegData,
   utilities.handleErrors(accountController.updateAccount)
 );
 

@@ -1,5 +1,6 @@
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
+const utilities = require("../utilities/");
 require("dotenv").config();
 const accountController = {};
 
@@ -7,12 +8,9 @@ const accountController = {};
  *  Clear Cookies
  * *********************************************** */
 accountController.clearCookies = async function (req, res, next) {
-  res.clearCookie("jwt", {
-    httpOnly: true,
-    path: "/",
-  });
+  utilities.clearAccountCookie(req, res);
   req.flash("notice", "cookies cleared");
-  res.redirect("/").status(200);
+  res.status(200).redirect("/");
 };
 
 module.exports = accountController;

@@ -53,4 +53,27 @@ accountModel.getAccountByEmail = async function (account_email) {
   }
 };
 
+/* *********************************************** *
+ * Update account info by account_id
+ * *********************************************** */
+accountModel.updateAccount = async function (
+  account_firstname,
+  account_lastname,
+  account_email,
+  account_id
+) {
+  try {
+    const sql =
+      "UPDATE account SET account_firstname = $1,account_lastname = $2,account_email = $3 WHERE account_id = $4 RETURNING *;";
+    return await pool.query(sql, [
+      account_firstname,
+      account_lastname,
+      account_email,
+      account_id,
+    ]);
+  } catch (error) {
+    return error.message;
+  }
+};
+
 module.exports = accountModel;
