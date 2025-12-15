@@ -203,36 +203,72 @@ accountController.buildUpdate = async function (req, res, next) {
 };
 
 /* *********************************************** *
- *  Process Account Update
+ *  Process Account Info Update
  * *********************************************** */
-accountController.updateAccount = async function (req, res) {
+accountController.updateAccountInfo = async function (req, res) {
   const { account_firstname, account_lastname, account_email, account_id } =
     req.body;
-  accountModel.updateAccount(
+  accountModel.updateAccountInfo(
     account_firstname,
     account_lastname,
     account_email,
     account_id
   );
-
   const accountCurrent = utilities.readAccountCookie(req, res);
-
   const accountData = {
     account_id: accountCurrent.account_id,
     account_firstname: account_firstname,
     account_lastname: account_lastname,
     account_email: account_email,
-    account_type: accountCurrent.account_type
+    account_type: accountCurrent.account_type,
   };
-
-  console.log("================================")
-  console.log(accountData)
-  console.log("================================")
-
   utilities.clearAccountCookie(req, res);
   utilities.setAccountCookie(req, res, accountData);
   req.flash("notice", "Account Information Updated!");
-  res.status(201).redirect("./");
+  res.status(201).redirect("/account");
+};
+
+/* *********************************************** *
+ *  Process Account Password Update
+ * *********************************************** */
+accountController.updateAccountPassword = async function (req, res) {
+  let nav = await utilities.getNav();
+  res.locals.loginLink = utilities.getHeaderLinks(req, res);
+  const { account_password, account_id } = req.body;
+
+  // Hash the password before storing
+  let hashedPassword;
+  try {
+    // regular password and cost (salt is generated automatically)
+    hashedPassword = await bcrypt.hashSync(account_password, 10);
+  } catch (error) {
+    req.flash(
+      "notice",
+      "Sorry, there was an error processing the registration."
+    );
+    res.status(500).render("./account/update", {
+      title: "Account Update",
+      nav,
+      errors: null,
+    });
+  }
+
+  const updateResult = await accountModel.updateAccountPassword(
+    hashedPassword,
+    account_id
+  );
+
+  if (updateResult) {
+    req.flash("notice", `Your password has been updated!`);
+    res.status(201).redirect("/account");
+  } else {
+    req.flash("notice", "Sorry, the registration failed.");
+    res.status(500).render("./account/update", {
+      title: "Account Update",
+      nav,
+      errors: null,
+    });
+  }
 };
 
 module.exports = accountController;

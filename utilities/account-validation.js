@@ -168,7 +168,7 @@ validate.checkAccountEmailUpdate = async (req, res, next) => {
 /* *********************************************** *
  *  Account Update Data Validation Rules
  * *********************************************** */
-validate.updateRules = () => {
+validate.updateInfoRules = () => {
   return [
     // firstname is required and must be string
     body("account_firstname")
@@ -196,10 +196,10 @@ validate.updateRules = () => {
 };
 
 /* *********************************************** *
- *  Check data and return errors or continue
+ *  Check info update data and return errors or continue
  *  to update
  * *********************************************** */
-validate.checkUpdateData = async (req, res, next) => {
+validate.checkUpdateInfoData = async (req, res, next) => {
   const { account_firstname, account_lastname, account_email, account_id } =
     req.body;
   let errors = [];
@@ -215,6 +215,48 @@ validate.checkUpdateData = async (req, res, next) => {
       title: "Account Update",
       nav,
       errors,
+      accountId: account_id,
+    });
+    return;
+  }
+  next();
+};
+
+/* *********************************************** *
+ *  Update Password Data Validation Rules
+ * *********************************************** */
+validate.updatePasswordRules = () => {
+  return [
+    // password is required and must be strong password
+    body("account_password")
+      .trim()
+      .notEmpty()
+      .isStrongPassword({
+        minLength: 12,
+        minLowercase: 1,
+        minUppercase: 1,
+        minNumbers: 1,
+        minSymbols: 1,
+      })
+      .withMessage("Password does not meet requirements."),
+  ];
+};
+
+/* *********************************************** *
+ *  Check password update data and return errors or continue
+ *  to update
+ * *********************************************** */
+validate.checkUpdatePasswordData = async (req, res, next) => {
+  const { account_id } = req.body;
+  let errors = [];
+  errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    res.locals.loginLink = utilities.getHeaderLinks(req, res);
+    let nav = await utilities.getNav();
+    res.render("account/update", {
+      errors,
+      title: "Account Update",
+      nav,
       accountId: account_id,
     });
     return;

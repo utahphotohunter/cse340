@@ -13,7 +13,7 @@
 
 <section id="account-update-view" class="container form">
   <div class="container">
-    <form id="accountUpdateForm" action="/account/update" method="post">
+    <form id="accountUpdateForm" action="/account/update/info" method="post">
       <section class="container">
         <label for="accountFirstname">First Name:</label>
         <input
@@ -60,7 +60,11 @@
         <button type="submit" class="btn submit-btn">Update Info</button>
       </section>
     </form>
-    <form id="passwordUpdateForm" action="/account/update" method="post">
+    <form
+      id="passwordUpdateForm"
+      action="/account/update/password"
+      method="post"
+    >
       <section class="container">
         <label for="accountPassword">Password</label>
         <input
@@ -79,6 +83,7 @@
           required
           hidden
         />
+        required hidden />
         <article class="container">
           <p>
             Password must be at least 12 characters and contain the following:
@@ -88,6 +93,9 @@
             <li>* at least 1 number</li>
             <li>* at least 1 special character</li>
           </ul>
+          <p>
+            Updating your password will immediately change the current password.
+          </p>
         </article>
       </section>
       <section class="submit-area container">

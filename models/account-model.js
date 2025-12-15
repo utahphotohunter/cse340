@@ -56,7 +56,7 @@ accountModel.getAccountByEmail = async function (account_email) {
 /* *********************************************** *
  * Update account info by account_id
  * *********************************************** */
-accountModel.updateAccount = async function (
+accountModel.updateAccountInfo = async function (
   account_firstname,
   account_lastname,
   account_email,
@@ -71,6 +71,19 @@ accountModel.updateAccount = async function (
       account_email,
       account_id,
     ]);
+  } catch (error) {
+    return error.message;
+  }
+};
+
+/* *********************************************** *
+ * Update account password by account_id
+ * *********************************************** */
+accountModel.updateAccountPassword = async function (account_password, account_id) {
+  try {
+    const sql =
+      "UPDATE account SET account_password = $1 WHERE account_id = $2 RETURNING *;";
+    return await pool.query(sql, [account_password, account_id]);
   } catch (error) {
     return error.message;
   }
