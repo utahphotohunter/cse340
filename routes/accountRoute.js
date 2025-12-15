@@ -39,13 +39,21 @@ router.post(
 // Route to build account update page
 router.get("/update", utilities.handleErrors(accountController.buildUpdate));
 
-// POST route for updating account
+// POST route for updating account info
 router.post(
-  "/update",
+  "/update/info",
   regValidate.checkAccountEmailUpdate,
-  regValidate.updateRules(),
-  regValidate.checkUpdateData,
-  utilities.handleErrors(accountController.updateAccount)
+  regValidate.updateInfoRules(),
+  regValidate.checkUpdateInfoData,
+  utilities.handleErrors(accountController.updateAccountInfo)
+);
+
+// POST route for updating account password
+router.post(
+  "/update/password",
+  regValidate.updatePasswordRules(),
+  regValidate.checkUpdatePasswordData,
+  utilities.handleErrors(accountController.updateAccountPassword)
 );
 
 module.exports = router;
