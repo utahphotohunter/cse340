@@ -169,10 +169,10 @@ Util.getHeaderLinks = (req, res) => {
     const secret = process.env.ACCESS_TOKEN_SECRET;
     const accountData = jwt.verify(rawAccountData, secret);
     const firstName = accountData.account_firstname;
-    loginLink = `<a title="Manage Account" href="/account">Welcome ${firstName}!</a> <a title="Click to log out" href="/account/login">Logout</a>`;
+    loginLink = `<a title="Manage Account" href="/account">Welcome ${firstName}!</a> <a title="Click to log out" href="/account/logout">Logout</a>`;
   } else {
     loginLink =
-      '<a title="Click to log in" href="/account/login">Login</a>';
+      '<a title="Click to log in" href="/account/login">My Account</a>';
   }
   return loginLink;
 };

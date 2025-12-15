@@ -18,7 +18,6 @@ const session = require("express-session");
 const pool = require("./database");
 const bodyParser = require("body-parser");
 const cookieParser = require("cookie-parser");
-const clearRoute = require("./routes/clearRoute")
 
 /* *********************************************** *
  *  Middleware
@@ -67,10 +66,6 @@ app.get("/", utilities.handleErrors(baseController.buildHome));
 // Inventory routes
 app.use("/inv", utilities.handleErrors(inventoryRoute));
 // Account route
-
-// development route for testing - clears cookies
-app.use("/clear", utilities.handleErrors(clearRoute))
-
 app.use("/account", utilities.handleErrors(accountRoute));
 // File Not Found Route - must be last route in list
 app.use(async (req, res, next) => {

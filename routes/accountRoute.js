@@ -22,6 +22,9 @@ router.post(
   utilities.handleErrors(accountController.accountLogin)
 );
 
+// Route to logout of account
+router.get("/logout", utilities.handleErrors(accountController.accountLogout));
+
 // Route to build registration page
 router.get(
   "/register",

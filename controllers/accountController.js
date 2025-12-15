@@ -146,6 +146,15 @@ accountController.accountLogin = async function (req, res) {
 };
 
 /* *********************************************** *
+ *  Process Logout
+ * *********************************************** */
+accountController.accountLogout = async function (req, res, next) {
+  utilities.clearAccountCookie(req, res);
+  req.flash("notice", "Logged Out");
+  res.status(200).redirect("/");
+};
+
+/* *********************************************** *
  *  Deliver Account Management View
  * *********************************************** */
 accountController.buildManagement = async function (req, res, next) {
