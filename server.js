@@ -47,6 +47,7 @@ app.use(function (req, res, next) {
 app.use(bodyParser.json());
 // for parsing application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: true }));
+// cookie parser
 app.use(cookieParser());
 // jwt middleware
 app.use(utilities.checkJWTToken);

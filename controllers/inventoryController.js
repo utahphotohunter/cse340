@@ -1,6 +1,7 @@
 const { render } = require("ejs");
 const invModel = require("../models/inventory-model");
 const utilities = require("../utilities");
+const invUtils = require("../utilities/inventory-reviews");
 const manager = require("../utilities/management");
 
 const inventoryController = {};
@@ -126,15 +127,25 @@ inventoryController.addNewClassification = async function (req, res) {
  *  Build detail view w/ inventory id
  * *********************************************** */
 inventoryController.buildByInvId = async function (req, res, next) {
+  let nav = await utilities.getNav();
+
   const inv_id = req.params.inv_id;
   const data = await invModel.getInventoryByInvId(inv_id);
-  let nav = await utilities.getNav();
-  res.locals.loginLink = utilities.getHeaderLinks(req, res);
   let d = data[0];
+
+  res.locals.loginLink = utilities.getHeaderLinks(req, res);
+  
+  const accountData = utilities.readAccountCookie(req, res);
+  // let reviews = await invUtils.buildReviews(inv_id);
+  let reviews = "hello world";
+  const interaction = await invUtils.buildInteraction(accountData);
+
   res.render("./inventory/detail", {
     title: `${d.inv_year} ${d.inv_make} ${d.inv_model}`,
     nav,
     d,
+    reviews,
+    interaction,
   });
 };
 
