@@ -25,4 +25,26 @@ reviewModel.getReviewsByInvId = async function (inv_id) {
   }
 };
 
+reviewModel.getReviewsByAccountId = async function (accountId) {
+  let response;
+  try {
+    const sql =
+      "SELECT review.account_id, review.review_id, review.review_text, review.review_date, review.inv_id, inventory.inv_year, inventory.inv_make, inventory.inv_model FROM review INNER JOIN inventory ON review.inv_id = inventory.inv_id WHERE account_id = $1;";
+    let getReviews = await pool.query(sql, [accountId]);
+    let result = getReviews.rows;
+    if (result.length != 0) {
+      response = result;
+    } else {
+      response = false;
+    }
+  } catch (error) {
+    console.log("=============================================");
+    console.log(`Error at review-model.getReviewsByAccountId: -- ${error}`);
+    console.log("=============================================");
+    response = "Error";
+  } finally {
+    return response;
+  }
+};
+
 module.exports = reviewModel;

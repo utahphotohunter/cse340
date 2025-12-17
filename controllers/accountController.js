@@ -1,5 +1,6 @@
 const utilities = require("../utilities/");
 const accountModel = require("../models/account-model");
+const reviewController = require("../controllers/reviewController");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 require("dotenv").config();
@@ -174,11 +175,16 @@ accountController.buildManagement = async function (req, res, next) {
       <p><a href="/inv" title="Manage Inventory" class="btn">Manage Inventory</a></p>
       `;
     }
+
+    const accountId = accountData.account_id;
+    const reviews = await reviewController.buildReviewsByAccountId(accountId);
+
     res.locals.loginLink = utilities.getHeaderLinks(req, res);
     res.render("account/management", {
       title: "Account Management",
       nav,
       content: content,
+      reviews,
       errors: null,
     });
   } else {

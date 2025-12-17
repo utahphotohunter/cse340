@@ -20,7 +20,7 @@ const months = [
 /* *********************************************** *
  *  Build reviews list by inv_id
  * *********************************************** */
-reviewController.buildReviews = async function (inv_id) {
+reviewController.buildReviewsByInvId = async function (inv_id) {
   let response;
   try {
     const reviews = await reviewsModel.getReviewsByInvId(inv_id);
@@ -39,16 +39,52 @@ reviewController.buildReviews = async function (inv_id) {
         const textContent = review.review_text;
 
         return `<li>
-            <p>${screenName} wrote on ${date}</p>
-            <p>${textContent}</p>
+            <p class="review-credit">${screenName} wrote on ${date}</p>
+            <p class="review-comment">${textContent}</p>
         </li>`;
       });
 
-      response = reviewsList;
+      response = reviewsList.join("");
     }
   } catch (error) {
     console.log("=============================================");
-    console.log(`Error at reviewController.buildReviews: -- ${error}`);
+    console.log(`Error at reviewController.buildReviewsByInvId: -- ${error}`);
+    console.log("=============================================");
+    response = "Controller Error";
+  } finally {
+    return response;
+  }
+};
+
+reviewController.buildReviewsByAccountId = async function (accountId) {
+  let response;
+  try {
+    const reviews = await reviewsModel.getReviewsByAccountId(accountId);
+
+    if (!reviews) {
+      response = "You haven't reviewed any vehicles yet.";
+    } else if (reviews === "Error") {
+      response = "Database Error";
+    } else {
+      const reviewsList = reviews.map((review) => {
+        const numDate = review.review_date.toISOString().split("T")[0];
+        const [year, month, day] = numDate.split("-");
+        const namedMonth = months[parseInt(month) - 1];
+
+        const date = `${namedMonth} ${day}, ${year}`;
+        const vehicle = `${review.inv_year} ${review.inv_make} ${review.inv_model}`;
+        const inv_id = review.inv_id;
+
+        return `<li>
+            <p>Reviewed the ${vehicle} on ${date} | <a href="/review/update/${inv_id}">Edit</a> | <a href="/review/delete/${inv_id}">Delete</a></p>
+        </li>`;
+      });
+
+      response = reviewsList.join("");
+    }
+  } catch (error) {
+    console.log("=============================================");
+    console.log(`Error at reviewController.getReviewsByAccountId: -- ${error}`);
     console.log("=============================================");
     response = "Controller Error";
   } finally {
@@ -60,9 +96,9 @@ reviewController.buildReviews = async function (inv_id) {
  *  Build review form and login prompt, retuning
  *  correct data based on login status
  * *********************************************** */
-reviewController.buildInteraction = (accountData, inv_id) => {
+reviewController.buildReviewInteraction = (accountData, inv_id) => {
   let response;
-  
+
   if (accountData) {
     const screenName = `${accountData.account_firstname[0]}${accountData.account_lastname}`;
     const account_id = accountData.account_id;
