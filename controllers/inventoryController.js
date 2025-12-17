@@ -1,7 +1,7 @@
 const { render } = require("ejs");
 const invModel = require("../models/inventory-model");
 const utilities = require("../utilities");
-const invUtils = require("../utilities/inventory-reviews");
+const reviewController = require("./reviewController");
 const manager = require("../utilities/management");
 
 const inventoryController = {};
@@ -134,11 +134,13 @@ inventoryController.buildByInvId = async function (req, res, next) {
   let d = data[0];
 
   res.locals.loginLink = utilities.getHeaderLinks(req, res);
+
+  // let reviews = await reviewController.buildReviews(inv_id);
+  let reviews = "hello world";
   
   const accountData = utilities.readAccountCookie(req, res);
-  // let reviews = await invUtils.buildReviews(inv_id);
-  let reviews = "hello world";
-  const interaction = await invUtils.buildInteraction(accountData);
+  // const interaction = await reviewController.buildInteraction(accountData);
+  const interaction = "hello world";
 
   res.render("./inventory/detail", {
     title: `${d.inv_year} ${d.inv_make} ${d.inv_model}`,

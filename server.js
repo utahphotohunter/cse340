@@ -20,6 +20,8 @@ const pool = require("./database");
 const bodyParser = require("body-parser");
 const cookieParser = require("cookie-parser");
 
+const testRoute = require("./routes/testRoute")
+
 /* *********************************************** *
  *  Middleware
  * *********************************************** */
@@ -71,6 +73,14 @@ app.use("/inv", utilities.handleErrors(inventoryRoute));
 app.use("/account", utilities.handleErrors(accountRoute));
 // Review route
 app.use("/review", utilities.handleErrors(reviewRoute));
+
+// -----------------------------------------------------
+/* *********************************************** *
+ * route to run tests (for development)
+* *********************************************** */
+app.use("/test", utilities.handleErrors(testRoute));
+// -----------------------------------------------------
+
 // File Not Found Route - must be last route in list
 app.use(async (req, res, next) => {
   next({ status: 404, message: "Sorry, we appear to have lost that page." });
