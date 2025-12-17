@@ -1,26 +1,47 @@
 const reviewsModel = require("../models/review-model");
 require("dotenv").config();
 const reviewController = {};
+const months = [
+  "January",
+  "February",
+  "March",
+  "April",
+  "May",
+  "June",
+  "July",
+  "August",
+  "September",
+  "October",
+  "November",
+  "December",
+];
 
-// reviewController.buildReviews = async function (inv_id) {
-reviewController.buildReviews = async function (req, res) {
+reviewController.buildReviews = async function (inv_id) {
   let response;
-  const inv_id = req.params.inv_id;
   try {
     const reviews = await reviewsModel.getReviewsByInvId(inv_id);
     if (!reviews) {
       response = "";
-      console.log("no response")
-    } else if ((response = "Error")) {
+      console.log("no response");
+    } else if (reviews === "Error") {
       response = "Database Error";
     } else {
-      // reviewItems = reviews.map(
-      //   (review) => `<li></li>` /* review data <li> goes here */
-      // );
-      console.log("=============================================");
-      console.log(reviews);
-      console.log("=============================================");
-      response = reviewItems.join("");
+      const reviewsList = reviews.map((review) => {
+        const numDate = review.review_date.toISOString().split("T")[0];
+        const [year, month, day] = numDate.split("-");
+        const namedMonth = months[parseInt(month) - 1];
+
+        const date = `${namedMonth} ${day}, ${year}`;
+        const screenName = `${review.first_name[0]}${review.last_name}`;
+        const textContent = review.review_text;
+
+        return `<li>
+            <p>${screenName} wrote on ${date}</p>
+            <p>${textContent}</p>
+        </li>`
+      });
+
+      response = reviewsList;
     }
   } catch (error) {
     console.log("=============================================");
@@ -34,6 +55,7 @@ reviewController.buildReviews = async function (req, res) {
 
 reviewController.buildInteraction = (accountData) => {
   if (accountData) {
+    // interaction form goes here
     return "Interaction Form";
   } else {
     return '<p>You must <a href="/account/login">login</a> to write a review.</p>';

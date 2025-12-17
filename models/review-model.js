@@ -11,7 +11,7 @@ reviewModel.getReviewsByInvId = async function (inv_id) {
     let getReviews = await pool.query(sql, [inv_id]);
     let result = getReviews.rows;
     if (result.length != 0) {
-      response = getReviews;
+      response = result;
     } else {
       response = false;
     }
