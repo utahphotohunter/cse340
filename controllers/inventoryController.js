@@ -136,11 +136,9 @@ inventoryController.buildByInvId = async function (req, res, next) {
   res.locals.loginLink = utilities.getHeaderLinks(req, res);
 
   let reviews = await reviewController.buildReviews(inv_id);
-  // let reviews = "hello world";
   
   const accountData = utilities.readAccountCookie(req, res);
-  const interaction = await reviewController.buildInteraction(accountData);
-  // const interaction = "hello world";
+  const interaction = await reviewController.buildInteraction(accountData, inv_id);
 
   res.render("./inventory/detail", {
     title: `${d.inv_year} ${d.inv_make} ${d.inv_model}`,
