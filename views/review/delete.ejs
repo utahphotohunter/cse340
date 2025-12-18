@@ -1,0 +1,51 @@
+<!-- test if title exist -->
+<% if (title) { %>
+<h1><%= title %></h1>
+<% } else { res.redirect('/') } %> <%- messages() %>
+<!-- ---------------------------------------- -->
+<% if (errors) { %>
+<ul class="notice">
+  <% errors.array().forEach(error => { %>
+  <li><%= error.msg %></li>
+  <% }) %>
+</ul>
+<% } %>
+
+<section id="delete-update-view" class="container form">
+  <div class="container">
+    <form
+      id="reviewDeleteForm"
+      action="/review/delete"
+      method="post"
+    >
+      <section class="container">
+        <h2>Delete Review</h2>
+        <label for="reviewDate">Review Date</label>
+        <input
+          type="text"
+          id="reviewDate"
+          name="review_date"
+          value="<%= locals.review_date %>"
+          readonly
+          required
+        />
+        <label for="reviewText">Review Text</label>
+        <textarea
+          name="review_text"
+          id="reviewText"
+          placeholder="Write your vehicle review here."
+          value="<%= locals.review_text %>"
+          readonly
+          required
+        >
+        </textarea>
+      </section>
+      <section class="submit-area container">
+        <p>Confirm the deletion of this review. The delete is permanent.</p>
+        <button type="submit" class="btn submit-btn">Delete Review</button>
+      </section>
+      <label for="reviewId" hidden></label>
+      <input type="number" name="review_id" id="reviewId" value="<%= locals.review_id %>" required hidden>
+    </form>
+  </div>
+</section>

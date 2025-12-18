@@ -73,10 +73,10 @@ reviewController.buildReviewsByAccountId = async function (accountId) {
 
         const date = `${namedMonth} ${day}, ${year}`;
         const vehicle = `${review.inv_year} ${review.inv_make} ${review.inv_model}`;
-        const inv_id = review.inv_id;
+        const review_id = review.review_id;
 
         return `<li>
-            <p>Reviewed the ${vehicle} on ${date} | <a href="/review/update/${inv_id}">Edit</a> | <a href="/review/delete/${inv_id}">Delete</a></p>
+            <p>Reviewed the ${vehicle} on ${date} | <a href="/review/update/${review_id}">Edit</a> | <a href="/review/delete/${review_id}">Delete</a></p>
         </li>`;
       });
 
@@ -106,22 +106,22 @@ reviewController.buildReviewInteraction = (accountData, inv_id) => {
     response = `<h3>Add Your Own Review</h3>
     <form id="reviewForm" action="/review" method="post">
       <section class="container">
-        <label for="screen_name">Screen Name:</label>
+        <label for="screenName">Screen Name:</label>
         <input
           type="text"
           name="screen_name"
-          id="screenName"
+          id="screen_name"
           required
           value="${screenName}"
           readonly
         />
       </section>
       <section class="container">
-        <label for="review_text">Last Name:</label>
-        <textarea name="review_text" id="reviewText" placeholder="Write your vehicle review here." required></textarea>
-        <label for="account_id" hidden></label>
+        <label for="reviewText">Last Name:</label>
+        <textarea name="review_text" id="reviewText" placeholder="Write your vehicle review here." value="<%= locals.review_text %>" required></textarea>
+        <label for="accountId" hidden></label>
         <input type="number" name="account_id" id="accountId" value="${account_id}" required hidden>
-        <label for="inv_id" hidden></label>
+        <label for="invId" hidden></label>
         <input type="number" name="inv_id" id="invId" value="${inv_id}" required hidden>
       </section>
       <section class="submit-area container">
@@ -133,6 +133,127 @@ reviewController.buildReviewInteraction = (accountData, inv_id) => {
       '<p>You must <a href="/account/login">login</a> to write a review.</p>';
   }
   return response;
+};
+
+/* *********************************************** *
+ *  Add review to database
+ * *********************************************** */
+reviewController.addReview = async function (req, res) {
+  const { screen_name, review_text, account_id, inv_id } = req.body;
+  res.locals.loginLink = utilities.getHeaderLinks(req, res);
+  let nav = await utilities.getNav();
+
+  try {
+    const result = await reviewsModel.addReview(
+      review_text,
+      account_id,
+      inv_id
+    );
+    if (result === "success") {
+      req.flash(
+        "notice",
+        `Thank you, ${screen_name} for your comments! Your review has been posted.`
+      );
+      res.status(201).redirect(`inv/detail/${inv_id}`);
+    } else {
+      const data = await invModel.getInventoryByInvId(inv_id);
+      let d = data[0];
+      let reviews = await reviewController.buildReviewsByInvId(inv_id);
+      const accountData = utilities.readAccountCookie(req, res);
+      const interaction = await reviewController.buildReviewInteraction(
+        accountData,
+        inv_id
+      );
+      res.locals.review_text = review_text;
+      req.flash(
+        "notice",
+        "An uknown error occured while posting your review. Please try again."
+      );
+      res.status(500).render("./inventory/detail", {
+        title: `${d.inv_year} ${d.inv_make} ${d.inv_model}`,
+        nav,
+        d,
+        reviews,
+        interaction,
+      });
+    }
+  } catch (error) {
+    console.log("=============================================");
+    console.log(`Error at reviewController.addReview: -- ${error}`);
+    console.log("=============================================");
+    const data = await invModel.getInventoryByInvId(inv_id);
+    let d = data[0];
+    let reviews = await reviewController.buildReviewsByInvId(inv_id);
+    const accountData = utilities.readAccountCookie(req, res);
+    const interaction = await reviewController.buildReviewInteraction(
+      accountData,
+      inv_id
+    );
+    res.locals.review_text = review_text;
+    req.flash(
+      "notice",
+      "An uknown error occured while posting your review. Please try again."
+    );
+    res.status(500).render("./inventory/detail", {
+      title: `${d.inv_year} ${d.inv_make} ${d.inv_model}`,
+      nav,
+      d,
+      reviews,
+      interaction,
+    });
+  }
+};
+
+reviewController.buildUpdateReviewForm = async function (req, res) {
+  res.locals.loginLink = utilities.getHeaderLinks(req, res);
+  let nav = await utilities.getNav();
+  const review_id = req.params.review_id;
+  let result = await reviewsModel.getReviewsByReviewId(review_id);
+
+  const review_text = result.review_text;
+  const inv_year = result.inv_year;
+  const inv_make = result.inv_make;
+  const inv_model = result.inv_model;
+
+  const numDate = result.review_date.toISOString().split("T")[0];
+  const [year, month, day] = numDate.split("-");
+  const namedMonth = months[parseInt(month) - 1];
+  const date = `${namedMonth} ${day}, ${year}`;
+
+  res.locals.review_date = date;
+  res.locals.review_text = review_text;
+  res.locals.review_id = review_id;
+
+  res.render("./review/update", {
+    title: `Edit ${inv_year} ${inv_make} ${inv_model} Review`,
+    nav,
+  });
+};
+
+reviewController.buildDeleteReviewForm = async function (req, res) {
+  res.locals.loginLink = utilities.getHeaderLinks(req, res);
+  let nav = await utilities.getNav();
+  const review_id = req.params.review_id;
+  let result = await reviewsModel.getReviewsByReviewId(review_id);
+
+  const review_text = result.review_text;
+  const inv_year = result.inv_year;
+  const inv_make = result.inv_make;
+  const inv_model = result.inv_model;
+
+  const numDate = result.review_date.toISOString().split("T")[0];
+  const [year, month, day] = numDate.split("-");
+  const namedMonth = months[parseInt(month) - 1];
+  const date = `${namedMonth} ${day}, ${year}`;
+
+  res.locals.review_date = date;
+  res.locals.review_text = review_text;
+  res.locals.review_id = review_id;
+
+  res.render("./review/update", {
+    title: `Delete ${inv_year} ${inv_make} ${inv_model} Review`,
+    nav,
+  });
 };
 
 module.exports = reviewController;

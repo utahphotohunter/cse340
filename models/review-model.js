@@ -47,4 +47,59 @@ reviewModel.getReviewsByAccountId = async function (accountId) {
   }
 };
 
+reviewModel.getReviewsByReviewId = async function (reviewId) {
+  let response;
+  try {
+    const sql =
+      "SELECT review.review_id, review.account_id, review.review_text, review.review_date, review.inv_id, inventory.inv_year, inventory.inv_make, inventory.inv_model FROM review INNER JOIN inventory ON review.inv_id = inventory.inv_id WHERE review_id = $1;";
+    let getReviews = await pool.query(sql, [reviewId]);
+    let result = getReviews.rows;
+    if (result.length != 0) {
+      response = result;
+    } else {
+      response = false;
+    }
+  } catch (error) {
+    console.log("=============================================");
+    console.log(`Error at review-model.getReviewsByReviewId: -- ${error}`);
+    console.log("=============================================");
+    response = "Error";
+  } finally {
+    return response;
+  }
+};
+
+
+
+
+
+reviewModel.addReview = async function (review_text, account_id, inv_id) {
+  let response;
+  try {
+    const date = new Date().toISOString().split("T")[0];
+
+    const sql =
+      "INSERT INTO review (review_text, review_date, inv_id, account_id) VALUES ($1, $2, $3, $4) RETURNING *;";
+    let addReview = await pool.query(sql, [
+      review_text,
+      date,
+      inv_id,
+      account_id,
+    ]);
+    let result = addReview.rows;
+    if (result.length != 0) {
+      response = "success";
+    } else {
+      response = false;
+    }
+  } catch (error) {
+    console.log("=============================================");
+    console.log(`Error at review-model.addReview: -- ${error}`);
+    console.log("=============================================");
+    response = "Error";
+  } finally {
+    return response;
+  }
+};
+
 module.exports = reviewModel;
