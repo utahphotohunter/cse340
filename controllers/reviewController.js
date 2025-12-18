@@ -209,9 +209,8 @@ reviewController.buildUpdateReviewForm = async function (req, res) {
   let nav = await utilities.getNav();
   const review_id = req.params.review_id;
   let result = await reviewsModel.getReviewByReviewId(review_id);
-
   try {
-    if (!result) {
+    if (!response) {
       req.flash(
         "notice",
         "An uknown error occured while retrieving your review. Please try again."
@@ -244,12 +243,12 @@ reviewController.buildUpdateReviewForm = async function (req, res) {
           errors: null,
         });
       } else {
-        const review_text = result.review_text;
-        const inv_year = result.inv_year;
-        const inv_make = result.inv_make;
-        const inv_model = result.inv_model;
+        const review_text = result[0].review_text;
+        const inv_year = result[0].inv_year;
+        const inv_make = result[0].inv_make;
+        const inv_model = result[0].inv_model;
 
-        const numDate = result.review_date.toISOString().split("T")[0];
+        const numDate = result[0].review_date.toISOString().split("T")[0];
         const [year, month, day] = numDate.split("-");
         const namedMonth = months[parseInt(month) - 1];
         const date = `${namedMonth} ${day}, ${year}`;
@@ -258,7 +257,7 @@ reviewController.buildUpdateReviewForm = async function (req, res) {
         res.locals.review_text = review_text;
         res.locals.review_id = review_id;
 
-        res.status(200).render("./review/update", {
+        res.status(200).render("/review/update", {
           title: `Edit ${inv_year} ${inv_make} ${inv_model} Review`,
           nav,
         });
@@ -478,9 +477,7 @@ reviewController.updateReviewByReviewId = async function (req, res) {
 reviewController.deleteReviewByReviewId = async function (req, res) {
   const { review_id } = req.body;
   try {
-    const result = await reviewsModel.deleteReviewByReviewId(
-      review_id,
-    );
+    const result = await reviewsModel.deleteReviewByReviewId(review_id);
     if (result === "success") {
       req.flash(
         "notice",
