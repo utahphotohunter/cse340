@@ -13,11 +13,7 @@
 
 <section id="delete-update-view" class="container form">
   <div class="container">
-    <form
-      id="reviewDeleteForm"
-      action="/review/delete"
-      method="post"
-    >
+    <form id="reviewDeleteForm" action="/review/delete" method="post">
       <section class="container">
         <h2>Delete Review</h2>
         <label for="reviewDate">Review Date</label>
@@ -39,13 +35,20 @@
           required
         >
         </textarea>
+        <label for="reviewId" hidden></label>
+        <input
+          type="number"
+          name="review_id"
+          id="reviewId"
+          value="<%= locals.review_id %>"
+          required
+          hidden
+        />
       </section>
       <section class="submit-area container">
         <p>Confirm the deletion of this review. The delete is permanent.</p>
         <button type="submit" class="btn submit-btn">Delete Review</button>
       </section>
-      <label for="reviewId" hidden></label>
-      <input type="number" name="review_id" id="reviewId" value="<%= locals.review_id %>" required hidden>
     </form>
   </div>
 </section>

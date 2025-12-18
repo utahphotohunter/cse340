@@ -210,24 +210,92 @@ reviewController.buildUpdateReviewForm = async function (req, res) {
   const review_id = req.params.review_id;
   let result = await reviewsModel.getReviewsByReviewId(review_id);
 
-  const review_text = result.review_text;
-  const inv_year = result.inv_year;
-  const inv_make = result.inv_make;
-  const inv_model = result.inv_model;
+  try {
+    if (!result) {
+      req.flash(
+        "notice",
+        "An uknown error occured while retrieving your review. Please try again."
+      );
+      const accountData = utilities.readAccountCookie(req, res);
+      if (accountData) {
+        const accountType = accountData.account_type;
+        const firstName = accountData.account_firstname;
+        let content = `
+            <h2>Welcome ${firstName}</h2>
+            <p><a href="/account/update" title="Update Account" class="btn">Update Account Information</a></p>
+          `;
+        if (accountType == "Admin" || accountType == "Employee") {
+          content = `<h2>Welcome ${firstName}</h2>
+          <p><a href="/account/update" title="Update Account" class="btn">Update Account Information</a></p>
+          <h3>Inventory Management</h3>
+          <p><a href="/inv" title="Manage Inventory" class="btn">Manage Inventory</a></p>
+          `;
+        }
 
-  const numDate = result.review_date.toISOString().split("T")[0];
-  const [year, month, day] = numDate.split("-");
-  const namedMonth = months[parseInt(month) - 1];
-  const date = `${namedMonth} ${day}, ${year}`;
+        const accountId = accountData.account_id;
+        const reviews = await reviewController.buildReviewsByAccountId(
+          accountId
+        );
+        res.status(500).render("account/management", {
+          title: "Account Management",
+          nav,
+          content: content,
+          reviews,
+          errors: null,
+        });
+      } else {
+        const review_text = result.review_text;
+        const inv_year = result.inv_year;
+        const inv_make = result.inv_make;
+        const inv_model = result.inv_model;
 
-  res.locals.review_date = date;
-  res.locals.review_text = review_text;
-  res.locals.review_id = review_id;
+        const numDate = result.review_date.toISOString().split("T")[0];
+        const [year, month, day] = numDate.split("-");
+        const namedMonth = months[parseInt(month) - 1];
+        const date = `${namedMonth} ${day}, ${year}`;
 
-  res.render("./review/update", {
-    title: `Edit ${inv_year} ${inv_make} ${inv_model} Review`,
-    nav,
-  });
+        res.locals.review_date = date;
+        res.locals.review_text = review_text;
+        res.locals.review_id = review_id;
+
+        res.status(200).render("./review/update", {
+          title: `Edit ${inv_year} ${inv_make} ${inv_model} Review`,
+          nav,
+        });
+      }
+    }
+  } catch (error) {
+    req.flash(
+      "notice",
+      "An uknown error occured while retrieving your review. Please try again."
+    );
+    const accountData = utilities.readAccountCookie(req, res);
+    if (accountData) {
+      const accountType = accountData.account_type;
+      const firstName = accountData.account_firstname;
+      let content = `
+            <h2>Welcome ${firstName}</h2>
+            <p><a href="/account/update" title="Update Account" class="btn">Update Account Information</a></p>
+          `;
+      if (accountType == "Admin" || accountType == "Employee") {
+        content = `<h2>Welcome ${firstName}</h2>
+          <p><a href="/account/update" title="Update Account" class="btn">Update Account Information</a></p>
+          <h3>Inventory Management</h3>
+          <p><a href="/inv" title="Manage Inventory" class="btn">Manage Inventory</a></p>
+          `;
+      }
+
+      const accountId = accountData.account_id;
+      const reviews = await reviewController.buildReviewsByAccountId(accountId);
+      res.status(500).render("account/management", {
+        title: "Account Management",
+        nav,
+        content: content,
+        reviews,
+        errors: error,
+      });
+    }
+  }
 };
 
 reviewController.buildDeleteReviewForm = async function (req, res) {
@@ -236,24 +304,96 @@ reviewController.buildDeleteReviewForm = async function (req, res) {
   const review_id = req.params.review_id;
   let result = await reviewsModel.getReviewsByReviewId(review_id);
 
-  const review_text = result.review_text;
-  const inv_year = result.inv_year;
-  const inv_make = result.inv_make;
-  const inv_model = result.inv_model;
+  try {
+    if (!result) {
+      req.flash(
+        "notice",
+        "An uknown error occured while retrieving your review. Please try again."
+      );
+      const accountData = utilities.readAccountCookie(req, res);
+      if (accountData) {
+        const accountType = accountData.account_type;
+        const firstName = accountData.account_firstname;
+        let content = `
+            <h2>Welcome ${firstName}</h2>
+            <p><a href="/account/update" title="Update Account" class="btn">Update Account Information</a></p>
+          `;
+        if (accountType == "Admin" || accountType == "Employee") {
+          content = `<h2>Welcome ${firstName}</h2>
+          <p><a href="/account/update" title="Update Account" class="btn">Update Account Information</a></p>
+          <h3>Inventory Management</h3>
+          <p><a href="/inv" title="Manage Inventory" class="btn">Manage Inventory</a></p>
+          `;
+        }
+        const accountId = accountData.account_id;
+        const reviews = await reviewController.buildReviewsByAccountId(
+          accountId
+        );
+        res.status(500).render("account/management", {
+          title: "Account Management",
+          nav,
+          content: content,
+          reviews,
+          errors: null,
+        });
+      } else {
+        const review_text = result.review_text;
+        const inv_year = result.inv_year;
+        const inv_make = result.inv_make;
+        const inv_model = result.inv_model;
 
-  const numDate = result.review_date.toISOString().split("T")[0];
-  const [year, month, day] = numDate.split("-");
-  const namedMonth = months[parseInt(month) - 1];
-  const date = `${namedMonth} ${day}, ${year}`;
+        const numDate = result.review_date.toISOString().split("T")[0];
+        const [year, month, day] = numDate.split("-");
+        const namedMonth = months[parseInt(month) - 1];
+        const date = `${namedMonth} ${day}, ${year}`;
 
-  res.locals.review_date = date;
-  res.locals.review_text = review_text;
-  res.locals.review_id = review_id;
+        res.locals.review_date = date;
+        res.locals.review_text = review_text;
+        res.locals.review_id = review_id;
 
-  res.render("./review/update", {
-    title: `Delete ${inv_year} ${inv_make} ${inv_model} Review`,
-    nav,
-  });
+        res.status(200).render("./review/update", {
+          title: `Delete ${inv_year} ${inv_make} ${inv_model} Review`,
+          nav,
+        });
+      }
+    }
+  } catch (error) {
+    req.flash(
+      "notice",
+      "An uknown error occured while retrieving your review. Please try again."
+    );
+    const accountData = utilities.readAccountCookie(req, res);
+    if (accountData) {
+      const accountType = accountData.account_type;
+      const firstName = accountData.account_firstname;
+      let content = `
+            <h2>Welcome ${firstName}</h2>
+            <p><a href="/account/update" title="Update Account" class="btn">Update Account Information</a></p>
+          `;
+      if (accountType == "Admin" || accountType == "Employee") {
+        content = `<h2>Welcome ${firstName}</h2>
+          <p><a href="/account/update" title="Update Account" class="btn">Update Account Information</a></p>
+          <h3>Inventory Management</h3>
+          <p><a href="/inv" title="Manage Inventory" class="btn">Manage Inventory</a></p>
+          `;
+      }
+
+      const accountId = accountData.account_id;
+      const reviews = await reviewController.buildReviewsByAccountId(accountId);
+      res.status(500).render("account/management", {
+        title: "Account Management",
+        nav,
+        content: content,
+        reviews,
+        errors: error,
+      });
+    }
+  }
 };
+
+
+reviewController.updateReviewByReviewId = async function (req, res) {
+  const { review_date, review_text, review_id } = req.body;
+}
 
 module.exports = reviewController;

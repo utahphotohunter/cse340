@@ -13,11 +13,7 @@
 
 <section id="review-update-view" class="container form">
   <div class="container">
-    <form
-      id="reviewUpdateForm"
-      action="/review/update"
-      method="post"
-    >
+    <form id="reviewUpdateForm" action="/review/update" method="post">
       <section class="container">
         <h2>Update Review</h2>
         <label for="reviewDate">Review Date</label>
@@ -38,12 +34,19 @@
           required
         >
         </textarea>
+        <label for="reviewId" hidden></label>
+        <input
+          type="number"
+          name="review_id"
+          id="reviewId"
+          value="<%= locals.review_id %>"
+          required
+          hidden
+        />
       </section>
       <section class="submit-area container">
         <button type="submit" class="btn submit-btn">Update Review</button>
       </section>
-      <label for="reviewId" hidden></label>
-      <input type="number" name="review_id" id="reviewId" value="<%= locals.review_id %>" required hidden>
     </form>
   </div>
 </section>
