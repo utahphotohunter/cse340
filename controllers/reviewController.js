@@ -208,7 +208,7 @@ reviewController.buildUpdateReviewForm = async function (req, res) {
   res.locals.loginLink = utilities.getHeaderLinks(req, res);
   let nav = await utilities.getNav();
   const review_id = req.params.review_id;
-  let result = await reviewsModel.getReviewsByReviewId(review_id);
+  let result = await reviewsModel.getReviewByReviewId(review_id);
 
   try {
     if (!result) {
@@ -302,7 +302,7 @@ reviewController.buildDeleteReviewForm = async function (req, res) {
   res.locals.loginLink = utilities.getHeaderLinks(req, res);
   let nav = await utilities.getNav();
   const review_id = req.params.review_id;
-  let result = await reviewsModel.getReviewsByReviewId(review_id);
+  let result = await reviewsModel.getReviewByReviewId(review_id);
 
   try {
     if (!result) {
@@ -391,9 +391,171 @@ reviewController.buildDeleteReviewForm = async function (req, res) {
   }
 };
 
-
 reviewController.updateReviewByReviewId = async function (req, res) {
-  const { review_date, review_text, review_id } = req.body;
-}
+  const { review_text, review_id } = req.body;
+  try {
+    const result = await reviewsModel.updateReviewByReviewId(
+      review_id,
+      review_text
+    );
+    if (result === "success") {
+      req.flash(
+        "notice",
+        `Thank you, ${screen_name} for your comments! Your review has been updated.`
+      );
+      res.status(201).redirect(`/account`);
+    } else if (!result || result === "Error") {
+      req.flash(
+        "notice",
+        "An uknown error occured while updating your review. Please try again."
+      );
+      const accountData = utilities.readAccountCookie(req, res);
+      if (accountData) {
+        const accountType = accountData.account_type;
+        const firstName = accountData.account_firstname;
+        let content = `
+            <h2>Welcome ${firstName}</h2>
+            <p><a href="/account/update" title="Update Account" class="btn">Update Account Information</a></p>
+          `;
+        if (accountType == "Admin" || accountType == "Employee") {
+          content = `<h2>Welcome ${firstName}</h2>
+          <p><a href="/account/update" title="Update Account" class="btn">Update Account Information</a></p>
+          <h3>Inventory Management</h3>
+          <p><a href="/inv" title="Manage Inventory" class="btn">Manage Inventory</a></p>
+          `;
+        }
+        const accountId = accountData.account_id;
+        const reviews = await reviewController.buildReviewsByAccountId(
+          accountId
+        );
+        res.status(500).render("account/management", {
+          title: "Account Management",
+          nav,
+          content: content,
+          reviews,
+          errors: null,
+        });
+      }
+    }
+  } catch (error) {
+    console.log("=============================================");
+    console.log(
+      `Error at reviewController.updateReviewByReviewId: -- ${error}`
+    );
+    console.log("=============================================");
+    req.flash(
+      "notice",
+      "An uknown error occured while updating your review. Please try again."
+    );
+    const accountData = utilities.readAccountCookie(req, res);
+    if (accountData) {
+      const accountType = accountData.account_type;
+      const firstName = accountData.account_firstname;
+      let content = `
+            <h2>Welcome ${firstName}</h2>
+            <p><a href="/account/update" title="Update Account" class="btn">Update Account Information</a></p>
+          `;
+      if (accountType == "Admin" || accountType == "Employee") {
+        content = `<h2>Welcome ${firstName}</h2>
+          <p><a href="/account/update" title="Update Account" class="btn">Update Account Information</a></p>
+          <h3>Inventory Management</h3>
+          <p><a href="/inv" title="Manage Inventory" class="btn">Manage Inventory</a></p>
+          `;
+      }
+      const accountId = accountData.account_id;
+      const reviews = await reviewController.buildReviewsByAccountId(accountId);
+      res.status(500).render("account/management", {
+        title: "Account Management",
+        nav,
+        content: content,
+        reviews,
+        errors: error,
+      });
+    }
+  }
+};
+
+reviewController.deleteReviewByReviewId = async function (req, res) {
+  const { review_id } = req.body;
+  try {
+    const result = await reviewsModel.deleteReviewByReviewId(
+      review_id,
+    );
+    if (result === "success") {
+      req.flash(
+        "notice",
+        `Thank you, ${screen_name}! Your review has been deleted.`
+      );
+      res.status(201).redirect(`/account`);
+    } else if (!result || result === "Error") {
+      req.flash(
+        "notice",
+        "An uknown error occured while deleting your review. Please try again."
+      );
+      const accountData = utilities.readAccountCookie(req, res);
+      if (accountData) {
+        const accountType = accountData.account_type;
+        const firstName = accountData.account_firstname;
+        let content = `
+            <h2>Welcome ${firstName}</h2>
+            <p><a href="/account/update" title="Update Account" class="btn">Update Account Information</a></p>
+          `;
+        if (accountType == "Admin" || accountType == "Employee") {
+          content = `<h2>Welcome ${firstName}</h2>
+          <p><a href="/account/update" title="Update Account" class="btn">Update Account Information</a></p>
+          <h3>Inventory Management</h3>
+          <p><a href="/inv" title="Manage Inventory" class="btn">Manage Inventory</a></p>
+          `;
+        }
+        const accountId = accountData.account_id;
+        const reviews = await reviewController.buildReviewsByAccountId(
+          accountId
+        );
+        res.status(500).render("account/management", {
+          title: "Account Management",
+          nav,
+          content: content,
+          reviews,
+          errors: null,
+        });
+      }
+    }
+  } catch (error) {
+    console.log("=============================================");
+    console.log(
+      `Error at reviewController.updateReviewByReviewId: -- ${error}`
+    );
+    console.log("=============================================");
+    req.flash(
+      "notice",
+      "An uknown error occured while deleting your review. Please try again."
+    );
+    const accountData = utilities.readAccountCookie(req, res);
+    if (accountData) {
+      const accountType = accountData.account_type;
+      const firstName = accountData.account_firstname;
+      let content = `
+            <h2>Welcome ${firstName}</h2>
+            <p><a href="/account/update" title="Update Account" class="btn">Update Account Information</a></p>
+          `;
+      if (accountType == "Admin" || accountType == "Employee") {
+        content = `<h2>Welcome ${firstName}</h2>
+          <p><a href="/account/update" title="Update Account" class="btn">Update Account Information</a></p>
+          <h3>Inventory Management</h3>
+          <p><a href="/inv" title="Manage Inventory" class="btn">Manage Inventory</a></p>
+          `;
+      }
+      const accountId = accountData.account_id;
+      const reviews = await reviewController.buildReviewsByAccountId(accountId);
+      res.status(500).render("account/management", {
+        title: "Account Management",
+        nav,
+        content: content,
+        reviews,
+        errors: error,
+      });
+    }
+  }
+};
 
 module.exports = reviewController;

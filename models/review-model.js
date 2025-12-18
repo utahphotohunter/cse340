@@ -47,7 +47,7 @@ reviewModel.getReviewsByAccountId = async function (accountId) {
   }
 };
 
-reviewModel.getReviewsByReviewId = async function (reviewId) {
+reviewModel.getReviewByReviewId = async function (reviewId) {
   let response;
   try {
     const sql =
@@ -68,10 +68,6 @@ reviewModel.getReviewsByReviewId = async function (reviewId) {
     return response;
   }
 };
-
-
-
-
 
 reviewModel.addReview = async function (review_text, account_id, inv_id) {
   let response;
@@ -95,6 +91,50 @@ reviewModel.addReview = async function (review_text, account_id, inv_id) {
   } catch (error) {
     console.log("=============================================");
     console.log(`Error at review-model.addReview: -- ${error}`);
+    console.log("=============================================");
+    response = "Error";
+  } finally {
+    return response;
+  }
+};
+
+reviewModel.updateReviewByReviewId = async function (review_id, review_text) {
+  let response;
+  try {
+    const sql =
+      "UPDATE review SET review_text = $1 WHERE review_id = $2 RETURNING *;";
+    let updateReview = await pool.query(sql, [review_text, review_id]);
+    let result = updateReview.rows;
+    if (result.length != 0) {
+      response = "success";
+    } else {
+      response = false;
+    }
+  } catch (error) {
+    console.log("=============================================");
+    console.log(`Error at review-model.updateReviewByReviewId: -- ${error}`);
+    console.log("=============================================");
+    response = "Error";
+  } finally {
+    return response;
+  }
+};
+
+reviewModel.deleteReviewByReviewId = async function (review_id) {
+  let response;
+  try {
+    const sql =
+      "DELETE FROM review WHERE review_id = $1 RETURNING *;";
+    let deleteReview = await pool.query(sql, [review_id]);
+    let result = deleteReview.rows;
+    if (result.length != 0) {
+      response = "success";
+    } else {
+      response = false;
+    }
+  } catch (error) {
+    console.log("=============================================");
+    console.log(`Error at review-model.deleteReviewByReviewId: -- ${error}`);
     console.log("=============================================");
     response = "Error";
   } finally {
